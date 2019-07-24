@@ -6,7 +6,7 @@
 namespace app
 {
 ResourceManager::ResourceManager(Core &core)
-    : Manager(core)
+    : Manager{core}
 {
 }
 

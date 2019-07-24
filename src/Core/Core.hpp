@@ -75,7 +75,8 @@ bool Core::has() const
 {
     static_assert(std::is_base_of_v<Manager, T>, "T must be a child class of Manager");
 
-    return m_managers.find(std::type_index{typeid(T)}) != m_managers.end();
+    const auto it = m_managers.find(std::type_index{typeid(T)});
+    return it != m_managers.end() && it->second != nullptr;
 }
 
 }  // namespace app

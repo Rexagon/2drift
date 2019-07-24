@@ -3,10 +3,12 @@
 
 #include "ResourcesScope.hpp"
 
+#include "Core/Core.hpp"
+
 namespace app
 {
-ResourcesScope::ResourcesScope(const std::shared_ptr<ResourceManager> &manager)
-    : m_resourceManager(manager)
+ResourcesScope::ResourcesScope(Core &core)
+    : m_resourceManager(core.get<ResourceManager>().lock())
 {
 }
 

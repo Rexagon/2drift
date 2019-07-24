@@ -21,7 +21,7 @@ bool isMouseButtonValid(const sf::Mouse::Button button)
 namespace app
 {
 InputManager::InputManager(Core &core)
-    : Manager(core)
+    : Manager{core}
 {
 }
 

@@ -3,6 +3,7 @@
 
 #include "Application.hpp"
 
+#include "Managers/FileManager.hpp"
 #include "Managers/InputManager.hpp"
 #include "Managers/ResourceManager.hpp"
 #include "Managers/WindowManager.hpp"
@@ -19,6 +20,7 @@ namespace app
 {
 Application::Application()
 {
+    m_core.bind<FileManager>();
     m_core.bind<InputManager>();
     m_core.bind<ResourceManager>();
     m_core.bind<WindowManager>(sf::Vector2u(1024, 768), APPLICATION_NAME);

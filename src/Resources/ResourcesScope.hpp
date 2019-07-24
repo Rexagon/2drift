@@ -9,7 +9,7 @@ namespace app
 class ResourcesScope final
 {
 public:
-    explicit ResourcesScope(const std::shared_ptr<ResourceManager> &manager);
+    explicit ResourcesScope(Core &core);
 
     ~ResourcesScope();
 

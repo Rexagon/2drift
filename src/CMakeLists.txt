@@ -5,15 +5,20 @@ set(2DRIFT_MANAGERS_SRC
         Managers/Manager.cpp
         Managers/WindowManager.cpp
         Managers/InputManager.cpp
-        Managers/ResourceManager.cpp)
+        Managers/ResourceManager.cpp
+        Managers/FileManager.cpp)
+
+set(2DRIFT_RESOURCES_SRC
+        Resources/ResourcesScope.cpp
+        Resources/TextureLoader.cpp)
 
 set(2DRIFT_STUFF_SRC
-        Stuff/Time.cpp
-        Stuff/ResourcesScope.cpp)
+        Stuff/Time.cpp)
 
 set(2DRIFT_SRC
         ${2DRIFT_CORE_SRC}
         ${2DRIFT_MANAGERS_SRC}
+        ${2DRIFT_RESOURCES_SRC}
         ${2DRIFT_STUFF_SRC}
         Application.cpp
         main.cpp)
