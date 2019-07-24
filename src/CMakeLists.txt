@@ -8,7 +8,8 @@ set(2DRIFT_MANAGERS_SRC
         Managers/ResourceManager.cpp)
 
 set(2DRIFT_STUFF_SRC
-        Stuff/Time.cpp)
+        Stuff/Time.cpp
+        Stuff/ResourcesScope.cpp)
 
 set(2DRIFT_SRC
         ${2DRIFT_CORE_SRC}

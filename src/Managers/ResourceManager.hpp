@@ -13,7 +13,9 @@ namespace app
 {
 class ResourceManager : public Manager
 {
+public:
     using Key = std::pair<std::string, std::type_index>;
+    using Loader = std::function<std::shared_ptr<void>()>;
 
     struct KeyHash
     {
@@ -26,8 +28,6 @@ class ResourceManager : public Manager
         }
     };
 
-public:
-    using Loader = std::function<std::shared_ptr<void>()>;
 
     explicit ResourceManager(Core &core);
 
@@ -64,7 +64,7 @@ public:
 
 
     template <typename T>
-    inline Key createKey(const std::string &name) const;
+    static inline Key createKey(const std::string &name);
 
 private:
     std::unordered_map<Key, Loader, KeyHash> m_loaders;
@@ -134,7 +134,7 @@ inline bool ResourceManager::isResourceLoaded(const std::string &name) const
 
 
 template <typename T>
-inline ResourceManager::Key ResourceManager::createKey(const std::string &name) const
+inline ResourceManager::Key ResourceManager::createKey(const std::string &name)
 {
     return std::pair{name, std::type_index{typeid(T)}};
 }
