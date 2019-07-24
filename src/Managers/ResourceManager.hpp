@@ -20,8 +20,8 @@ class ResourceManager : public Manager
         std::size_t operator()(const Key &key) const
         {
             size_t seed{};
-            stuff::hashCombine(seed, key.first);
-            stuff::hashCombine(seed, key.second);
+            hash::combine(seed, key.first);
+            hash::combine(seed, key.second);
             return seed;
         }
     };

@@ -8,7 +8,6 @@
 
 namespace app
 {
-
 class InputManager : public Manager
 {
 public:
@@ -37,4 +36,4 @@ private:
     sf::Vector2i m_currentMousePosition;
 };
 
-} // namespace app
+}  // namespace app

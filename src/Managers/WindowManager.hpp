@@ -40,4 +40,4 @@ private:
     std::unique_ptr<sf::RenderWindow> m_renderWindow;
 };
 
-} // namespace app
+}  // namespace app

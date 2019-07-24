@@ -7,9 +7,13 @@ set(2DRIFT_MANAGERS_SRC
         Managers/InputManager.cpp
         Managers/ResourceManager.cpp)
 
+set(2DRIFT_STUFF_SRC
+        Stuff/Time.cpp)
+
 set(2DRIFT_SRC
         ${2DRIFT_CORE_SRC}
         ${2DRIFT_MANAGERS_SRC}
+        ${2DRIFT_STUFF_SRC}
         Application.cpp
         main.cpp)
 

@@ -3,11 +3,11 @@
 
 #include "Application.hpp"
 
-#include <iostream>
-
 #include "Managers/InputManager.hpp"
 #include "Managers/ResourceManager.hpp"
 #include "Managers/WindowManager.hpp"
+
+#include "Stuff/Time.hpp"
 
 namespace
 {
@@ -36,11 +36,15 @@ void Application::run()
     // Main game loop
     auto &window = windowManager->getWindow();
 
-    sf::Clock timer;
+    auto before = time::now();
 
     while (!m_core.isPendingStop())
     {
-        const double dt = static_cast<double>(timer.restart().asSeconds());
+        // Calculate delta time
+        auto now = time::now();
+
+        const double dt = time::DurationSeconds{now - before}.count();
+        before = now;
 
         // Prepare managers for frame
         inputManager->reset();
