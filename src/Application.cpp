@@ -3,7 +3,10 @@
 
 #include "Application.hpp"
 
+#include <iostream>
+
 #include "Managers/InputManager.hpp"
+#include "Managers/ResourceManager.hpp"
 #include "Managers/WindowManager.hpp"
 
 namespace
@@ -17,6 +20,7 @@ namespace app
 Application::Application()
 {
     m_core.bind<InputManager>();
+    m_core.bind<ResourceManager>();
     m_core.bind<WindowManager>(sf::Vector2u(1024, 768), APPLICATION_NAME);
 
     m_core.init();

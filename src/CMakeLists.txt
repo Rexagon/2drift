@@ -4,7 +4,8 @@ set(2DRIFT_CORE_SRC
 set(2DRIFT_MANAGERS_SRC
         Managers/Manager.cpp
         Managers/WindowManager.cpp
-        Managers/InputManager.cpp)
+        Managers/InputManager.cpp
+        Managers/ResourceManager.cpp)
 
 set(2DRIFT_SRC
         ${2DRIFT_CORE_SRC}

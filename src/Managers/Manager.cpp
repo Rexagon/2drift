@@ -27,4 +27,10 @@ void Manager::onInit()
 {
 }
 
-} // namespace app
+
+Core &Manager::getCore()
+{
+    return m_core;
+}
+
+}  // namespace app

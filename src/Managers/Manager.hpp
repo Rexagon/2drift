@@ -21,10 +21,12 @@ public:
 protected:
     virtual void onInit();
 
+    Core &getCore();
+
 private:
     Core &m_core;
 
     bool m_isInitialized;
 };
 
-} // namespace app
+}  // namespace app

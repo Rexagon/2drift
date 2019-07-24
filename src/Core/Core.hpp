@@ -53,7 +53,10 @@ void Core::unbind()
     static_assert(std::is_base_of_v<Manager, T>, "T must be a child class of Manager");
 
     const auto it = m_managers.find(std::type_index{typeid(T)});
-    m_managers.erase(it);
+    if (it != m_managers.end())
+    {
+        m_managers.erase(it);
+    }
 }
 
 
@@ -75,4 +78,4 @@ bool Core::has() const
     return m_managers.find(std::type_index{typeid(T)}) != m_managers.end();
 }
 
-} // namespace app
+}  // namespace app
