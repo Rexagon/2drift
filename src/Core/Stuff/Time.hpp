@@ -3,7 +3,7 @@
 #include <chrono>
 #include <functional>
 
-namespace app::time
+namespace core::time
 {
 using DurationSeconds = std::chrono::duration<double>;
 using DurationMilliseconds = std::chrono::duration<uint64_t, std::milli>;
@@ -23,4 +23,4 @@ public:
     Benchmark(const std::string &name, const std::function<void()> &f);
 };
 
-}  // namespace app::time
+}  // namespace core::time

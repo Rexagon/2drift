@@ -2,21 +2,21 @@
 
 #include <SFML/Window/Event.hpp>
 
-#include "Core/Core.hpp"
+#include <Core/Core.hpp>
 
-namespace app
+namespace game
 {
-class Application
+class Game
 {
 public:
-    explicit Application();
+    explicit Game();
 
     void run();
 
 private:
     void handleEvent(const sf::Event &e);
 
-    Core m_core{};
+    core::Core m_core{};
 };
 
-}  // namespace app
+}  // namespace game

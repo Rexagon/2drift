@@ -5,7 +5,7 @@
 
 #include <iostream>
 
-namespace app::time
+namespace core::time
 {
 Benchmark::Benchmark(const std::function<void()> &f)
     : Benchmark("Unnamed", f)
@@ -21,4 +21,4 @@ Benchmark::Benchmark(const std::string &name, const std::function<void()> &f)
     std::cout << name << " benchmark result: " << DurationNanoseconds{after - before}.count() << "ns" << std::endl;
 }
 
-}  // namespace app::time
+}  // namespace core::time

@@ -1,11 +1,11 @@
 // This is an open source non-commercial project. Dear PVS-Studio, please check it.
 // PVS-Studio Static Code Analyzer for C, C++ and C#: http://www.viva64.com
 
-#include "Core/Core.hpp"
+#include "Core.hpp"
 
-namespace app
+namespace core
 {
-void app::Core::init()
+void Core::init()
 {
     for (auto &[key, value] : m_managers)
     {
@@ -25,4 +25,4 @@ bool Core::isPendingStop() const
     return m_isPendingStop;
 }
 
-}  // namespace app
+}  // namespace core

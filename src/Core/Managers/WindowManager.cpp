@@ -5,9 +5,9 @@
 
 #include "Core/Core.hpp"
 
-namespace app
+namespace core
 {
-WindowManager::WindowManager(app::Core &core, const sf::Vector2u &size, const std::string &title)
+WindowManager::WindowManager(core::Core &core, const sf::Vector2u &size, const std::string &title)
     : Manager{core}
     , m_options{size, title}
 {
@@ -69,4 +69,4 @@ sf::RenderWindow &WindowManager::getWindow()
     return *m_renderWindow;
 }
 
-}  // namespace app
+}  // namespace core

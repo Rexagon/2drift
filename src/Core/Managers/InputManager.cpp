@@ -18,7 +18,7 @@ bool isMouseButtonValid(const sf::Mouse::Button button)
 }  // namespace
 
 
-namespace app
+namespace core
 {
 InputManager::InputManager(Core &core)
     : Manager{core}
@@ -111,4 +111,4 @@ bool InputManager::getMouseButtonUp(const sf::Mouse::Button button) const
     return isMouseButtonValid(button) && m_lastMouseButtonsState[button] && !m_currentMouseButtonsState[button];
 }
 
-}  // namespace app
+}  // namespace core

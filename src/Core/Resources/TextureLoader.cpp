@@ -7,7 +7,7 @@
 
 #include "Core/Core.hpp"
 
-namespace app
+namespace core
 {
 TextureLoader::TextureLoader(Core &core, const std::string &path)
     : TextureLoader{core.get<FileManager>().lock(), path}
@@ -35,4 +35,4 @@ std::shared_ptr<void> TextureLoader::operator()()
     return texture;
 }
 
-}  // namespace app
+}  // namespace core

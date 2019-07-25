@@ -3,7 +3,7 @@
 
 #include "Manager.hpp"
 
-namespace app
+namespace core
 {
 Manager::Manager(Core &core)
     : m_core{core}
@@ -33,4 +33,4 @@ Core &Manager::getCore()
     return m_core;
 }
 
-}  // namespace app
+}  // namespace core

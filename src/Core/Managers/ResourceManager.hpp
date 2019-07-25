@@ -6,12 +6,12 @@
 #include <typeindex>
 #include <unordered_map>
 
+#include "Core/Stuff/Hash.hpp"
 #include "Manager.hpp"
-#include "Stuff/Hash.hpp"
 
-namespace app
+namespace core
 {
-class ResourceManager : public Manager
+class ResourceManager final : public Manager
 {
 public:
     using Key = std::pair<std::string, std::type_index>;
@@ -139,4 +139,4 @@ inline ResourceManager::Key ResourceManager::createKey(const std::string &name)
     return std::pair{name, std::type_index{typeid(T)}};
 }
 
-}  // namespace app
+}  // namespace core

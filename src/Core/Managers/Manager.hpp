@@ -1,6 +1,6 @@
 #pragma once
 
-namespace app
+namespace core
 {
 class Core;
 
@@ -29,4 +29,4 @@ private:
     bool m_isInitialized;
 };
 
-}  // namespace app
+}  // namespace core

@@ -5,9 +5,9 @@
 
 #include "Manager.hpp"
 
-namespace app
+namespace core
 {
-class FileManager : public Manager
+class FileManager final : public Manager
 {
 public:
     explicit FileManager(Core &core, const std::string &dataFolder = "data/");
@@ -17,4 +17,4 @@ public:
 private:
     std::string m_dataFolder;
 };
-}  // namespace app
+}  // namespace core

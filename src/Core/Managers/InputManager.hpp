@@ -6,9 +6,9 @@
 
 #include "Manager.hpp"
 
-namespace app
+namespace core
 {
-class InputManager : public Manager
+class InputManager final : public Manager
 {
 public:
     explicit InputManager(Core &core);
@@ -36,4 +36,4 @@ private:
     sf::Vector2i m_currentMousePosition;
 };
 
-}  // namespace app
+}  // namespace core

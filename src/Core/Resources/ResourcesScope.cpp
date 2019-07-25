@@ -5,7 +5,7 @@
 
 #include "Core/Core.hpp"
 
-namespace app
+namespace core
 {
 ResourcesScope::ResourcesScope(Core &core)
     : m_resourceManager(core.get<ResourceManager>().lock())
@@ -23,4 +23,4 @@ ResourcesScope::~ResourcesScope()
 }
 
 
-}  // namespace app
+}  // namespace core

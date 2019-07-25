@@ -7,7 +7,7 @@
 
 #include "Managers/Manager.hpp"
 
-namespace app
+namespace core
 {
 class Core
 {
@@ -79,4 +79,4 @@ bool Core::has() const
     return it != m_managers.end() && it->second != nullptr;
 }
 
-}  // namespace app
+}  // namespace core

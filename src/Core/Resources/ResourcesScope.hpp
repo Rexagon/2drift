@@ -2,9 +2,9 @@
 
 #include <unordered_set>
 
-#include "Managers/ResourceManager.hpp"
+#include "Core/Managers/ResourceManager.hpp"
 
-namespace app
+namespace core
 {
 class ResourcesScope final
 {
@@ -24,7 +24,7 @@ private:
 
 
 template <typename T>
-void ResourcesScope::bind(const std::string &name, const app::ResourceManager::Loader &loader)
+void ResourcesScope::bind(const std::string &name, const core::ResourceManager::Loader &loader)
 {
     const auto key = ResourceManager::createKey<T>(name);
 
@@ -32,4 +32,4 @@ void ResourcesScope::bind(const std::string &name, const app::ResourceManager::L
     m_resourceManager->bind(key, loader);
 }
 
-}  // namespace app
+}  // namespace core

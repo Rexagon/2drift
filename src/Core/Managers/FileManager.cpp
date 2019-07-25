@@ -5,7 +5,7 @@
 
 #include <fstream>
 
-namespace app
+namespace core
 {
 FileManager::FileManager(Core &core, const std::string &dataFolder)
     : Manager{core}
@@ -36,4 +36,4 @@ std::vector<char> FileManager::load(const std::string &filename)
     return result;
 }
 
-}  // namespace app
+}  // namespace core

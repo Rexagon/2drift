@@ -1,12 +1,12 @@
 #include <iostream>
 
-#include "Application.hpp"
+#include "Game/Game.hpp"
 
 int main()
 {
     try
     {
-        app::Application application;
+        game::Game application;
 
         application.run();
 

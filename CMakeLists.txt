@@ -3,4 +3,5 @@ project(2drift)
 
 set(CMAKE_CXX_STANDARD 17)
 
-add_subdirectory(src)
+add_subdirectory(src/Core)
+add_subdirectory(src/Game)

@@ -1,31 +1,21 @@
-set(2DRIFT_CORE_SRC
-        Core/Core.cpp)
+set(CORE_SRC
+        Core.cpp
 
-set(2DRIFT_MANAGERS_SRC
         Managers/Manager.cpp
         Managers/WindowManager.cpp
         Managers/InputManager.cpp
         Managers/ResourceManager.cpp
-        Managers/FileManager.cpp)
+        Managers/FileManager.cpp
+        Managers/SceneManager.cpp
 
-set(2DRIFT_RESOURCES_SRC
         Resources/ResourcesScope.cpp
-        Resources/TextureLoader.cpp)
+        Resources/TextureLoader.cpp
 
-set(2DRIFT_STUFF_SRC
         Stuff/Time.cpp)
 
-set(2DRIFT_SRC
-        ${2DRIFT_CORE_SRC}
-        ${2DRIFT_MANAGERS_SRC}
-        ${2DRIFT_RESOURCES_SRC}
-        ${2DRIFT_STUFF_SRC}
-        Application.cpp
-        main.cpp)
+add_library(core OBJECT ${CORE_SRC})
 
-add_executable(2drift ${2DRIFT_SRC})
-
-target_include_directories(2drift
+target_include_directories(core
         PRIVATE ${CMAKE_SOURCE_DIR}/src)
 
 set(SFML_STATIC_LIBRARIES TRUE)
@@ -37,7 +27,7 @@ find_package(SFML 2.5 CONFIG REQUIRED COMPONENTS
         graphics
         audio)
 
-target_link_libraries(2drift
+target_link_libraries(core PUBLIC
         sfml-system
         sfml-window
         sfml-network

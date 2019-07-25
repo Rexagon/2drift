@@ -7,9 +7,9 @@
 
 #include "Manager.hpp"
 
-namespace app
+namespace core
 {
-class WindowManager : public Manager
+class WindowManager final : public Manager
 {
 public:
     explicit WindowManager(Core &core, const sf::Vector2u &size, const std::string &title);
@@ -40,4 +40,4 @@ private:
     std::unique_ptr<sf::RenderWindow> m_renderWindow;
 };
 
-}  // namespace app
+}  // namespace core

@@ -3,7 +3,7 @@
 
 #include "ResourceManager.hpp"
 
-namespace app
+namespace core
 {
 ResourceManager::ResourceManager(Core &core)
     : Manager{core}
@@ -11,13 +11,13 @@ ResourceManager::ResourceManager(Core &core)
 }
 
 
-void ResourceManager::bind(const app::ResourceManager::Key &key, const app::ResourceManager::Loader &loader)
+void ResourceManager::bind(const core::ResourceManager::Key &key, const core::ResourceManager::Loader &loader)
 {
     m_loaders.emplace(key, loader);
 }
 
 
-void ResourceManager::unbind(const app::ResourceManager::Key &key)
+void ResourceManager::unbind(const core::ResourceManager::Key &key)
 {
     const auto it = m_loaders.find(key);
 
@@ -28,7 +28,7 @@ void ResourceManager::unbind(const app::ResourceManager::Key &key)
 }
 
 
-void ResourceManager::clear(const app::ResourceManager::Key &key)
+void ResourceManager::clear(const core::ResourceManager::Key &key)
 {
     const auto it = m_resources.find(key);
 
@@ -39,16 +39,16 @@ void ResourceManager::clear(const app::ResourceManager::Key &key)
 }
 
 
-bool ResourceManager::hasLoader(const app::ResourceManager::Key &key)
+bool ResourceManager::hasLoader(const core::ResourceManager::Key &key)
 {
     return m_resources.find(key) != m_resources.end();
 }
 
 
-bool ResourceManager::isResourceLoaded(const app::ResourceManager::Key &key)
+bool ResourceManager::isResourceLoaded(const core::ResourceManager::Key &key)
 {
     const auto it = m_resources.find(key);
     return it != m_resources.end() && it->second != nullptr;
 }
 
-}  // namespace app
+}  // namespace core

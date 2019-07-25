@@ -2,9 +2,9 @@
 
 #include <memory>
 
-#include "Managers/FileManager.hpp"
+#include "Core/Managers/FileManager.hpp"
 
-namespace app
+namespace core
 {
 class TextureLoader
 {
@@ -20,4 +20,4 @@ private:
     std::string m_path;
 };
 
-}  // namespace app
+}  // namespace core
