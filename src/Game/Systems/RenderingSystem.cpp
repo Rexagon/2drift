@@ -3,8 +3,6 @@
 
 #include "RenderingSystem.hpp"
 
-#include <Core/Managers/ResourceManager.hpp>
-
 #include <entt/entity/helper.hpp>
 
 #include "General.hpp"

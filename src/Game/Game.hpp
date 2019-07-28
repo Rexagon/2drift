@@ -14,7 +14,7 @@ public:
     void run();
 
 private:
-    void handleEvent(const sf::Event &e);
+    void createScene();
 
     core::Core m_core{};
 };

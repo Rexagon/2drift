@@ -11,27 +11,28 @@ namespace game
 {
 SpriteRenderingSystem::SpriteRenderingSystem(Core &core)
     : System{core}
-    , m_renderingQueue{core.get<ResourceManager>().lock()->get<RenderingQueue>("rendering_queue")}
 {
 }
 
 
-void SpriteRenderingSystem::update(SharedState &state, double dt)
+void SpriteRenderingSystem::update(game::SharedState &state, double dt)
 {
     auto &registry = state.getRegistry();
 
-    registry.view<SpriteComponent>().each([this, &registry](entt::entity entity, SpriteComponent &spriteComponent) {
-        sf::RenderStates states;
+    registry.view<SpriteComponent>().each(
+        [this, &state, &registry](entt::entity entity, SpriteComponent &spriteComponent) {
+            sf::RenderStates states;
 
-        TransformComponent *transformComponent = registry.try_get<TransformComponent>(entity);
-        if (transformComponent != nullptr)
-        {
-            states.transform = transformComponent->transform;
-        }
+            TransformComponent *transformComponent = registry.try_get<TransformComponent>(entity);
+            if (transformComponent != nullptr)
+            {
+                states.transform = transformComponent->transform;
+            }
 
-        m_renderingQueue->push(spriteComponent.layer,
-                               RenderingQueue::Item{spriteComponent.order, &spriteComponent.rectangleShape, states});
-    });
+            state.getRenderingQueue().push(
+                spriteComponent.layer,
+                RenderingQueue::Item{spriteComponent.order, &spriteComponent.rectangleShape, states});
+        });
 }
 
 }  // namespace game

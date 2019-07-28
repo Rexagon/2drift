@@ -1,5 +1,7 @@
 #pragma once
 
+#include <utility>
+
 #include <entt/entity/registry.hpp>
 
 #include <Core/Core.hpp>
@@ -11,14 +13,18 @@ namespace game
 class System
 {
 public:
-    explicit System(core::Core &core);
+    explicit System(core::Core &core)
+        : m_core{core}
+    {
+    }
 
     virtual ~System() = default;
 
-    virtual void update(SharedState &state, double dt) = 0;
-
 protected:
-    core::Core &getCore();
+    inline core::Core &getCore()
+    {
+        return m_core;
+    }
 
 private:
     core::Core &m_core;

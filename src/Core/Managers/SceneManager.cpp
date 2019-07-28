@@ -87,15 +87,15 @@ void SceneManager::applyActions()
 }
 
 
-void SceneManager::pop()
+void SceneManager::push(std::unique_ptr<Scene> scene)
 {
-    m_actionsQueue.emplace(ActionType::POP, nullptr);
+    m_actionsQueue.emplace(ActionType::PUSH, std::move(scene));
 }
 
 
-void SceneManager::onInit()
+void SceneManager::pop()
 {
-    applyActions();
+    m_actionsQueue.emplace(ActionType::POP, nullptr);
 }
 
 }  // namespace core

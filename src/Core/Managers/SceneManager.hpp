@@ -65,15 +65,9 @@ public:
 
     /**
      * @brief       Add 'push scene' action to the action queue
-     *
-     * Does not affect stack. Call SceneManager::applyActions
-     *
-     * @tparam T    Type of scene object
-     * @tparam Args Scene object constructor argument types
-     * @param args  Scene object constructor arguments
+     * @param scene Scene object
      */
-    template <typename T, typename... Args>
-    void push(Args &&... args);
+    void push(std::unique_ptr<Scene> scene);
 
     /**
      * @brief       Add 'pop scene' action to the action queue
@@ -83,8 +77,6 @@ public:
     void pop();
 
 private:
-    void onInit() override;
-
     std::queue<Action> m_actionsQueue;
 
     std::stack<std::unique_ptr<Scene>> m_scenes;
@@ -157,15 +149,5 @@ protected:
 private:
     Core &m_core;
 };
-
-
-template <typename T, typename... Args>
-void SceneManager::push(Args &&... args)
-{
-    static_assert(std::is_base_of_v<Scene, T>, "T must be a child class of Scene");
-
-    m_actionsQueue.emplace(ActionType::PUSH, std::make_unique<T>(getCore(), std::forward<Args>(args)...));
-}
-
 
 }  // namespace core

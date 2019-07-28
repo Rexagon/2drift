@@ -14,10 +14,7 @@ class SpriteRenderingSystem : public System
 public:
     explicit SpriteRenderingSystem(core::Core &core);
 
-    void update(SharedState &state, double dt) override;
-
-private:
-    std::shared_ptr<core::RenderingQueue> m_renderingQueue;
+    void update(SharedState &state, double dt);
 };
 
 

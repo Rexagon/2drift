@@ -2,7 +2,6 @@ set(GAME_SRC
         main.cpp
         Game.cpp
 
-        Stuff/System.cpp
         Systems/RenderingSystem.cpp
         Systems/SpriteRenderingSystem.cpp Stuff/SharedState.cpp)
 

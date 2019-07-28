@@ -12,8 +12,9 @@ class RenderingSystem final : public System
 public:
     explicit RenderingSystem(core::Core &core);
 
+    void update(SharedState &state, double dt);
+
 private:
-    void update(SharedState &state, double dt) override;
 
     std::shared_ptr<core::WindowManager> m_windowManager;
 };

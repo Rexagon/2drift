@@ -11,6 +11,9 @@
 
 #include "Stuff/Scene.hpp"
 
+#include "Systems/RenderingSystem.hpp"
+#include "Systems/SpriteRenderingSystem.hpp"
+
 using namespace core;
 
 namespace
@@ -30,9 +33,9 @@ Game::Game()
 
     m_core.bind<SceneManager>();
 
-    m_core.get<SceneManager>().lock()->push<Scene<SharedState>>();
-
     m_core.init();
+
+    createScene();
 }
 
 
@@ -61,7 +64,16 @@ void Game::run()
         while (window.pollEvent(e))
         {
             // Internal handle
-            handleEvent(e);
+            switch (e.type)
+            {
+                case sf::Event::Closed:
+                    // Close application after this frame
+                    m_core.requestExit();
+                    break;
+
+                default:
+                    break;
+            }
 
             // Managers handle
             inputManager->handleEvent(e);
@@ -80,18 +92,27 @@ void Game::run()
 }
 
 
-void Game::handleEvent(const sf::Event &e)
+void Game::createScene()
 {
-    switch (e.type)
-    {
-        case sf::Event::Closed:
-            // Close application after this frame
-            m_core.requestExit();
-            return;
+    // TODO: make configuring from lua
 
-        default:
-            return;
-    }
+    auto scene = std::make_unique<Scene<SharedState>>(m_core);
+    auto &state = scene->getState();
+
+    scene->addSystem(std::make_unique<SpriteRenderingSystem>(m_core));
+    scene->addSystem(std::make_unique<RenderingSystem>(m_core));
+
+    state.getRegistry().create<MainCamera, TransformComponent, CameraComponent>();
+
+    auto spriteEntity = state.getRegistry().create();
+    state.getRegistry().assign<SpriteComponent>(
+        spriteEntity, SpriteComponent{RenderingLayer::GROUND, 0, sf::RectangleShape{sf::Vector2f{100.0f, 100.0f}}});
+
+
+    // Push created scene
+    auto sceneManager = m_core.get<SceneManager>().lock();
+    sceneManager->push(std::move(scene));
+    sceneManager->applyActions();
 }
 
 }  // namespace game
