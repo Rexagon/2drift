@@ -4,6 +4,9 @@ namespace core
 {
 class Core;
 
+/**
+ * @brief   Base class for all managers
+ */
 class Manager
 {
 public:
@@ -11,14 +14,20 @@ public:
 
     virtual ~Manager() = default;
 
+    /**
+     * @brief   Initialize manager
+     *
+     * If manager was not initialized call onInit,
+     * do nothing otherwise
+     */
     void init();
 
-    inline bool isInitialized() const
-    {
-        return m_isInitialized;
-    }
+    inline bool isInitialized() const;
 
 protected:
+    /**
+     * @brief   Called during initialization
+     */
     virtual void onInit();
 
     Core &getCore();
@@ -28,5 +37,11 @@ private:
 
     bool m_isInitialized;
 };
+
+
+inline bool Manager::isInitialized() const
+{
+    return m_isInitialized;
+}
 
 }  // namespace core

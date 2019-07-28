@@ -6,12 +6,15 @@
 
 namespace core
 {
+/**
+ * @brief   Rendering queue
+ */
 class RenderingQueue
 {
 public:
     struct Item
     {
-        int8_t order;
+        int8_t order = 0;
         sf::Drawable *drawable = nullptr;
         sf::RenderStates renderStates;
     };

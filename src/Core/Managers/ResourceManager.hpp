@@ -11,6 +11,11 @@
 
 namespace core
 {
+/**
+ * @brief   Resource manager
+ *
+ * General store for named resources
+ */
 class ResourceManager final : public Manager
 {
 public:
@@ -28,26 +33,80 @@ public:
         }
     };
 
-
+    /**
+     * @brief           Create resource manager with empty store
+     * @param core      Game core object
+     */
     explicit ResourceManager(Core &core);
 
-
+    /**
+     * @brief           Get resource with specified type and name
+     *
+     * First access by {type,name} pair will try to load resource
+     * by loader specified earlier by calling ResourceManager::bind function
+     *
+     * @tparam T        Type of resource
+     * @param name      Name of resource
+     * @return          Resource
+     *
+     * @throws          std::runtime_error if resource cannot be loaded
+     */
     template <typename T>
     std::weak_ptr<T> get(const std::string &name);
 
-
+    /**
+     * @brief           Bind resource loader for specified type and name
+     *
+     * Further access by {type,name} pair will overwrite stored loader
+     *
+     * @tparam T        Type of resource
+     * @param name      Name of resource
+     * @param loader    Loader of resource
+     */
     template <typename T>
     inline void bind(const std::string &name, const Loader &loader);
 
+    /**
+     * @brief           Unbind resource loader for specified type and name
+     *
+     * Only loader will be deleted from manager. If resources was not loaded
+     * earlier, ResourceManager::bind must be called before accessing it
+     *
+     * @tparam T        Type of resource
+     * @param name      Name of resource
+     */
     template <typename T>
     inline void unbind(const std::string &name);
 
+    /**
+     * @brief           Unload resource stored in manager
+     *
+     * Removed resource reference from this manager if it was loaded before.
+     * Do nothing otherwise.
+     * Resource destructor will be called only if there is no other references
+     * to it.
+     *
+     * @tparam T        Type of resource
+     * @param name      Name of resource
+     */
     template <typename T>
     void clear(const std::string &name);
 
+    /**
+     * @brief           Check if any resource loader was binded for specified type and name
+     * @tparam T        Type of resource
+     * @param name      Name of resource
+     * @return          true if there is loader binded for specified type and name
+     */
     template <typename T>
     inline bool hasLoader(const std::string &name) const;
 
+    /**
+     * @brief           Check if resource is loaded
+     * @tparam T        Type of resource
+     * @param name      Name of resource
+     * @return          true if resource is loaded
+     */
     template <typename T>
     inline bool isResourceLoaded(const std::string &name) const;
 
@@ -65,6 +124,12 @@ public:
     bool isResourceLoaded(const Key &key);
 
 
+    /**
+     * @brief           Create key from specified type and name
+     * @tparam T        Type of resource
+     * @param name      Name of resource
+     * @return          Resource key
+     */
     template <typename T>
     static inline Key createKey(const std::string &name);
 

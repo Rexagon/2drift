@@ -9,9 +9,20 @@
 
 namespace core
 {
+/**
+ * @brief   Window manager
+ *
+ * Store window object
+ */
 class WindowManager final : public Manager
 {
 public:
+    /**
+     * @brief           Create window with specified size and title
+     * @param core      Game core object
+     * @param size      Window size in pixels
+     * @param title     Window title
+     */
     explicit WindowManager(Core &core, const sf::Vector2u &size, const std::string &title);
 
     void setSize(const sf::Vector2u &size);

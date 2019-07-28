@@ -111,4 +111,16 @@ bool InputManager::getMouseButtonUp(const sf::Mouse::Button button) const
     return isMouseButtonValid(button) && m_lastMouseButtonsState[button] && !m_currentMouseButtonsState[button];
 }
 
+
+sf::Vector2i InputManager::getMousePosition() const
+{
+    return m_currentMousePosition;
+}
+
+
+sf::Vector2i InputManager::getMousePositionDelta() const
+{
+    return m_currentMousePosition - m_lastMousePosition;
+}
+
 }  // namespace core

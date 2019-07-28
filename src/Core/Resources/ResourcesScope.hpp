@@ -6,17 +6,34 @@
 
 namespace core
 {
+/**
+ * @brief   Resource scope
+ *
+ * Used for smart resource unloading
+ */
 class ResourcesScope final
 {
 public:
+    /**
+     * @brief       Create empty resource scope
+     * @param core  Game core object
+     */
     explicit ResourcesScope(Core &core);
 
+    /**
+     * @brief       Unbinds and clears all resources binded by this scope
+     */
     ~ResourcesScope();
 
+    /**
+     * @brief           Bind resource loader with specified type and name
+     * @tparam T        Type of resource
+     * @param name      Name of resource
+     * @param loader    Resource loader
+     * @param load      Whether to load immediately. False by default
+     */
     template <typename T>
-    void bind(const std::string &name, const ResourceManager::Loader &loader);
-
-
+    void bind(const std::string &name, const ResourceManager::Loader &loader, bool load = false);
 
 private:
     std::shared_ptr<ResourceManager> m_resourceManager;
@@ -26,12 +43,17 @@ private:
 
 
 template <typename T>
-void ResourcesScope::bind(const std::string &name, const core::ResourceManager::Loader &loader)
+void ResourcesScope::bind(const std::string &name, const core::ResourceManager::Loader &loader, bool load)
 {
     const auto key = ResourceManager::createKey<T>(name);
 
     m_resources.emplace(key);
     m_resourceManager->bind(key, loader);
+
+    if (load)
+    {
+        m_resourceManager->get(key);
+    }
 }
 
 }  // namespace core

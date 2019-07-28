@@ -6,6 +6,9 @@
 
 namespace core
 {
+/**
+ * @brief   Simple texture loader
+ */
 class TextureLoader
 {
 public:

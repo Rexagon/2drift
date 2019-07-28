@@ -9,24 +9,53 @@
 
 namespace core
 {
+/**
+ * @brief   Game state container
+ */
 class Core
 {
 public:
+    /**
+     * @brief   Initialize all managers
+     */
     void init();
 
     void requestExit();
 
+    /**
+     * @return true of exit was requested
+     */
     bool isPendingStop() const;
 
+    /**
+     * @brief       Create and bind manager
+     * @tparam T    Type of manager
+     * @tparam Args Manager constructor argument types
+     * @param args  Manager constructor arguments
+     */
     template <typename T, typename... Args>
     void bind(Args &&... args);
 
+    /**
+     * @brief       Remove manager
+     * @tparam T    Type of manager
+     */
     template <typename T>
     void unbind();
 
+    /**
+     * @brief       Get manager of type
+     * @tparam T    Type of manager
+     * @return      Manager
+     */
     template <typename T>
     std::weak_ptr<T> get();
 
+    /**
+     * @brief       Check if manager of specified type was binded
+     * @tparam T    Type of manager
+     * @return      true if manager exists
+     */
     template <typename T>
     bool has() const;
 
