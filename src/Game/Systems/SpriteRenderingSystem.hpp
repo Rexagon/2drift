@@ -4,8 +4,8 @@
 
 #include <Core/Rendering/RenderingQueue.hpp>
 
+#include "Game/Stuff/System.hpp"
 #include "General.hpp"
-#include "System.hpp"
 
 namespace game
 {
@@ -14,7 +14,7 @@ class SpriteRenderingSystem : public System
 public:
     explicit SpriteRenderingSystem(core::Core &core);
 
-    void update(entt::registry &registry, double dt) override;
+    void update(SharedState &state, double dt) override;
 
 private:
     std::shared_ptr<core::RenderingQueue> m_renderingQueue;

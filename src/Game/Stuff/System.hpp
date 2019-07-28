@@ -4,6 +4,8 @@
 
 #include <Core/Core.hpp>
 
+#include "SharedState.hpp"
+
 namespace game
 {
 class System
@@ -13,7 +15,7 @@ public:
 
     virtual ~System() = default;
 
-    virtual void update(entt::registry &registry, double dt) = 0;
+    virtual void update(SharedState &state, double dt) = 0;
 
 protected:
     core::Core &getCore();

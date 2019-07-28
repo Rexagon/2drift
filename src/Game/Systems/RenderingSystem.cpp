@@ -16,13 +16,15 @@ namespace game
 RenderingSystem::RenderingSystem(core::Core &core)
     : System{core}
     , m_windowManager{core.get<WindowManager>().lock()}
-    , m_renderingQueue{core.get<ResourceManager>().lock()->get<RenderingQueue>(RENDERING_QUEUE)}
 {
 }
 
 
-void RenderingSystem::update(entt::registry &registry, const double dt)
+void RenderingSystem::update(SharedState &state, const double dt)
 {
+    auto &registry = state.getRegistry();
+    auto &renderingQueue = state.getRenderingQueue();
+
     // Prepare window
     auto &window = m_windowManager->getWindow();
     window.clear(sf::Color{36, 32, 32});
@@ -40,10 +42,10 @@ void RenderingSystem::update(entt::registry &registry, const double dt)
     window.setView(mainCamera.view);
 
     // Sort all layers
-    m_renderingQueue->sort();
+    renderingQueue.sort();
 
     // Draw all items on layers
-    for (const auto &[key, layer] : m_renderingQueue->getLayers())
+    for (const auto &[key, layer] : renderingQueue.getLayers())
     {
         for (const auto &item : layer)
         {
@@ -52,7 +54,7 @@ void RenderingSystem::update(entt::registry &registry, const double dt)
     }
 
     // Clear queue
-    m_renderingQueue->clear();
+    renderingQueue.clear();
 }
 
 }  // namespace game

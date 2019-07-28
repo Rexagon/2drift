@@ -9,7 +9,7 @@
 #include <Core/Managers/SceneManager.hpp>
 #include <Core/Managers/WindowManager.hpp>
 
-#include "Scenes/MainScene.hpp"
+#include "Stuff/Scene.hpp"
 
 using namespace core;
 
@@ -30,7 +30,7 @@ Game::Game()
 
     m_core.bind<SceneManager>();
 
-    m_core.get<SceneManager>().lock()->push<MainScene>();
+    m_core.get<SceneManager>().lock()->push<Scene<SharedState>>();
 
     m_core.init();
 }

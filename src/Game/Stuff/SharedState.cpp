@@ -1,18 +1,15 @@
 // This is an open source non-commercial project. Dear PVS-Studio, please check it.
 // PVS-Studio Static Code Analyzer for C, C++ and C#: http://www.viva64.com
 
-#include "System.hpp"
+#include "SharedState.hpp"
 
 namespace game
 {
-System::System(core::Core &core)
+SharedState::SharedState(core::Core &core, entt::registry &registry, entt::dispatcher &dispatcher)
     : m_core{core}
+    , m_registry{registry}
+    , m_dispatcher{dispatcher}
 {
-}
-
-core::Core &System::getCore()
-{
-    return m_core;
 }
 
 }  // namespace game

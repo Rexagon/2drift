@@ -3,7 +3,7 @@
 #include <Core/Managers/WindowManager.hpp>
 #include <Core/Rendering/RenderingQueue.hpp>
 
-#include "System.hpp"
+#include "Game/Stuff/System.hpp"
 
 namespace game
 {
@@ -13,11 +13,9 @@ public:
     explicit RenderingSystem(core::Core &core);
 
 private:
-    void update(entt::registry &registry, double dt) override;
+    void update(SharedState &state, double dt) override;
 
     std::shared_ptr<core::WindowManager> m_windowManager;
-
-    std::shared_ptr<core::RenderingQueue> m_renderingQueue;
 };
 
 }  // namespace game

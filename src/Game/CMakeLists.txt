@@ -2,11 +2,9 @@ set(GAME_SRC
         main.cpp
         Game.cpp
 
-        Scenes/MainScene.cpp
-
-        Systems/System.cpp
+        Stuff/System.cpp
         Systems/RenderingSystem.cpp
-        Systems/SpriteRenderingSystem.cpp)
+        Systems/SpriteRenderingSystem.cpp Stuff/SharedState.cpp)
 
 add_executable(game ${GAME_SRC})
 

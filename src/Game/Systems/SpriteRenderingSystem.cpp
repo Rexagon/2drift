@@ -16,8 +16,10 @@ SpriteRenderingSystem::SpriteRenderingSystem(Core &core)
 }
 
 
-void SpriteRenderingSystem::update(entt::registry &registry, double dt)
+void SpriteRenderingSystem::update(SharedState &state, double dt)
 {
+    auto &registry = state.getRegistry();
+
     registry.view<SpriteComponent>().each([this, &registry](entt::entity entity, SpriteComponent &spriteComponent) {
         sf::RenderStates states;
 

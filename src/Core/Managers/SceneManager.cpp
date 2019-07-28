@@ -32,7 +32,7 @@ void SceneManager::handleEvent(const sf::Event &e)
 
 void SceneManager::update(double dt)
 {
-    m_scenes.top()->onUpdate(dt);
+    m_scenes.top()->update(dt);
 }
 
 
@@ -96,18 +96,6 @@ void SceneManager::pop()
 void SceneManager::onInit()
 {
     applyActions();
-}
-
-
-Scene::Scene(Core &core)
-    : m_core{core}
-{
-}
-
-
-Core &Scene::getCore()
-{
-    return m_core;
 }
 
 }  // namespace core

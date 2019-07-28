@@ -21,8 +21,6 @@ struct CameraComponent
 
 
 // Constants
-constexpr auto RENDERING_QUEUE = "rendering_queue";
-
 using MainCamera = entt::tag<"main_camera"_hs>;
 
 enum RenderingLayer : uint8_t

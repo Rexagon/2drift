@@ -97,9 +97,20 @@ private:
 class Scene
 {
 public:
-    explicit Scene(Core &core);
+    explicit Scene(Core &core)
+        : m_core{core}
+    {
+    }
 
     virtual ~Scene() = default;
+
+    /**
+     * @brief       Called every frame
+     * @param dt    Time in seconds since last frame
+     */
+    virtual void update(double dt)
+    {
+    }
 
     /**
      * @brief       Called right before scene is added to stack
@@ -130,14 +141,6 @@ public:
     }
 
     /**
-     * @brief       Called every frame
-     * @param dt    Time in seconds since last frame
-     */
-    virtual void onUpdate(double dt)
-    {
-    }
-
-    /**
      * @brief       Called on every window event before Scene::onUpdate
      * @param e     Event from window
      */
@@ -146,7 +149,10 @@ public:
     }
 
 protected:
-    Core &getCore();
+    inline Core &getCore()
+    {
+        return m_core;
+    }
 
 private:
     Core &m_core;
