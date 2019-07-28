@@ -11,6 +11,7 @@
 
 #include "Stuff/Scene.hpp"
 
+#include "Systems/CameraResizingSystem.hpp"
 #include "Systems/RenderingSystem.hpp"
 #include "Systems/SpriteRenderingSystem.hpp"
 
@@ -99,10 +100,11 @@ void Game::createScene()
     auto scene = std::make_unique<Scene<SharedState>>(m_core);
     auto &state = scene->getState();
 
+    scene->addSystem(std::make_unique<CameraResizingSystem>(m_core));
     scene->addSystem(std::make_unique<SpriteRenderingSystem>(m_core));
     scene->addSystem(std::make_unique<RenderingSystem>(m_core));
 
-    state.getRegistry().create<MainCamera, TransformComponent, CameraComponent>();
+    state.getRegistry().create<MainCamera, TransformComponent, CameraComponent, WindowResizeableComponent>();
 
     auto spriteEntity = state.getRegistry().create();
     state.getRegistry().assign<SpriteComponent>(

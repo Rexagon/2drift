@@ -2,8 +2,11 @@ set(GAME_SRC
         main.cpp
         Game.cpp
 
+        Stuff/SharedState.cpp
+
         Systems/RenderingSystem.cpp
-        Systems/SpriteRenderingSystem.cpp Stuff/SharedState.cpp)
+        Systems/SpriteRenderingSystem.cpp
+        Systems/CameraResizingSystem.cpp)
 
 add_executable(game ${GAME_SRC})
 
