@@ -8,6 +8,8 @@ set(CORE_SRC
         Managers/FileManager.cpp
         Managers/SceneManager.cpp
 
+        Rendering/RenderingQueue.cpp
+
         Resources/ResourcesScope.cpp
         Resources/TextureLoader.cpp
 

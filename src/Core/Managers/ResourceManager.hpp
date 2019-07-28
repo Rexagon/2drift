@@ -52,6 +52,8 @@ public:
     inline bool isResourceLoaded(const std::string &name) const;
 
 
+    std::weak_ptr<void> get(const Key &key);
+
     void bind(const Key &key, const Loader &loader);
 
     void unbind(const Key &key);
@@ -75,26 +77,7 @@ private:
 template <typename T>
 std::weak_ptr<T> ResourceManager::get(const std::string &name)
 {
-    const auto key = createKey<T>(name);
-
-    // Find loaded resource first
-    const auto resourceIt = m_resources.find(key);
-    if (resourceIt != m_resources.end())
-    {
-        return std::static_pointer_cast<T>(resourceIt->second);
-    }
-
-    // If resource was not loaded - find loader
-    const auto loaderId = m_loaders.find(key);
-    if (loaderId == m_loaders.end())
-    {
-        throw std::runtime_error{"Unable to found for resource '" + name + "' of type " + key.second.name()};
-    }
-
-    auto [it, success] = m_resources.emplace(key, loaderId->second());
-    assert(success);
-
-    return std::static_pointer_cast<T>(it->second);
+    return std::static_pointer_cast<T>(get(createKey<T>(name)).lock());
 }
 
 

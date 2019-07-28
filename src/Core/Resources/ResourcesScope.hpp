@@ -16,6 +16,8 @@ public:
     template <typename T>
     void bind(const std::string &name, const ResourceManager::Loader &loader);
 
+
+
 private:
     std::shared_ptr<ResourceManager> m_resourceManager;
 

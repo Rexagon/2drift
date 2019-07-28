@@ -1,5 +1,6 @@
-﻿---
+﻿Language: Cpp
 BasedOnStyle: Google
+
 AccessModifierOffset: -4
 AlignAfterOpenBracket: Align
 AlignTrailingComments: true
@@ -31,5 +32,3 @@ SpaceBeforeParens: ControlStatements
 Standard: Cpp11
 TabWidth: 4
 UseTab: Never
-
-...

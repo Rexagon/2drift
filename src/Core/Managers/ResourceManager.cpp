@@ -11,6 +11,29 @@ ResourceManager::ResourceManager(Core &core)
 }
 
 
+std::weak_ptr<void> ResourceManager::get(const ResourceManager::Key &key)
+{
+    // Find loaded resource first
+    const auto resourceIt = m_resources.find(key);
+    if (resourceIt != m_resources.end())
+    {
+        return resourceIt->second;
+    }
+
+    // If resource was not loaded - find loader
+    const auto loaderId = m_loaders.find(key);
+    if (loaderId == m_loaders.end())
+    {
+        throw std::runtime_error{"Unable to find resource '" + key.first + "' of type " + key.second.name()};
+    }
+
+    auto [it, success] = m_resources.emplace(key, loaderId->second());
+    assert(success);
+
+    return it->second;
+}
+
+
 void ResourceManager::bind(const core::ResourceManager::Key &key, const core::ResourceManager::Loader &loader)
 {
     m_loaders.emplace(key, loader);
