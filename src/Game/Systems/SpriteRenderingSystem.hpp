@@ -9,12 +9,12 @@
 
 namespace game
 {
-class SpriteRenderingSystem : public System
+class SpriteRenderingSystem : public System<SharedState>
 {
 public:
-    explicit SpriteRenderingSystem(core::Core &core);
+    explicit SpriteRenderingSystem(SharedState &state);
 
-    void update(SharedState &state, double dt);
+    void operator()(SharedState &state, double dt) override;
 };
 
 

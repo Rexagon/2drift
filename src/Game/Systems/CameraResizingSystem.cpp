@@ -9,14 +9,14 @@ using namespace core;
 
 namespace game
 {
-CameraResizingSystem::CameraResizingSystem(Core &core)
-    : System{core}
-    , m_windowManager{core.get<WindowManager>().lock()}
+CameraResizingSystem::CameraResizingSystem(SharedState &state)
+    : System{state}
+    , m_windowManager{state.getCore().get<WindowManager>().lock()}
 {
 }
 
 
-void CameraResizingSystem::update(SharedState &state, double dt)
+void CameraResizingSystem::operator()(game::SharedState &state, double dt)
 {
     auto windowSize = sf::Vector2f(m_windowManager->getWindow().getSize());
 

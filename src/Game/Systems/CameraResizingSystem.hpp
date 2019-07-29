@@ -6,12 +6,12 @@
 
 namespace game
 {
-class CameraResizingSystem : public System
+class CameraResizingSystem : public System<SharedState>
 {
 public:
-    explicit CameraResizingSystem(core::Core &core);
+    explicit CameraResizingSystem(SharedState &core);
 
-    void update(SharedState &state, double dt);
+    void operator()(SharedState &state, double dt) override;
 
 private:
     std::shared_ptr<core::WindowManager> m_windowManager;

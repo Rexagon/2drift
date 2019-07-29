@@ -10,24 +10,21 @@
 
 namespace game
 {
+template <typename T>
 class System
 {
 public:
-    explicit System(core::Core &core)
-        : m_core{core}
+    static_assert(std::is_base_of_v<SharedState, T>, "T must be a child class of SharedState");
+
+    explicit System(T &state)
     {
     }
 
     virtual ~System() = default;
 
-protected:
-    inline core::Core &getCore()
+    virtual void operator()(T &t, double dt)
     {
-        return m_core;
     }
-
-private:
-    core::Core &m_core;
 };
 
 }  // namespace game

@@ -1,5 +1,6 @@
 #pragma once
 
+#include <experimental/type_traits>
 #include <vector>
 
 #include <Core/Managers/SceneManager.hpp>
@@ -18,11 +19,10 @@ public:
 
     explicit Scene(core::Core &core);
 
-    template <typename S>
-    void addSystem(std::unique_ptr<S> system);
+    template <typename S, typename... Args>
+    void addSystem(Args &&... args);
 
-    template <typename S>
-    void addSystem(std::function<void(S &, double)> function);
+    void addSystem(const std::function<void(T &, double)> &system);
 
     inline T &getState();
 
@@ -34,9 +34,7 @@ private:
 
     T m_sharedState;
 
-    std::vector<std::unique_ptr<System>> m_systems{};
-
-    std::vector<std::function<void(T &, double)>> m_systemUpdaters{};
+    std::vector<std::function<void(T &, double)>> m_systems{};
 };
 
 
@@ -49,25 +47,17 @@ Scene<T>::Scene(core::Core &core)
 
 
 template <typename T>
-template <typename Sy>
-void Scene<T>::addSystem(std::unique_ptr<Sy> system)
+template <typename S, typename... Args>
+void Scene<T>::addSystem(Args &&... args)
 {
-    static_assert(std::is_base_of_v<System, Sy>, "Sy must be a child class of System");
-
-    auto *ptr = system.get();
-    m_systemUpdaters.emplace_back([ptr](T &state, double dt) { ptr->update(state, dt); });
-
-    m_systems.emplace_back(std::move(system));
+    m_systems.emplace_back(S{m_sharedState, std::forward<Args>(args)...});
 }
 
 
 template <typename T>
-template <typename St>
-void Scene<T>::addSystem(std::function<void(St &, double)> function)
+void Scene<T>::addSystem(const std::function<void(T &, double)> &system)
 {
-    static_assert(std::is_base_of_v<St, T>, "St must be a equal to T or be a base class of T");
-
-    m_systemUpdaters.emplace_back(function);
+    m_systems.emplace_back(system);
 }
 
 
@@ -81,7 +71,7 @@ inline T &Scene<T>::getState()
 template <typename T>
 void Scene<T>::update(double dt)
 {
-    for (auto &updater : m_systemUpdaters)
+    for (auto &updater : m_systems)
     {
         updater(m_sharedState, dt);
     }

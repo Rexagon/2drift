@@ -100,9 +100,9 @@ void Game::createScene()
     auto scene = std::make_unique<Scene<SharedState>>(m_core);
     auto &state = scene->getState();
 
-    scene->addSystem(std::make_unique<CameraResizingSystem>(m_core));
-    scene->addSystem(std::make_unique<SpriteRenderingSystem>(m_core));
-    scene->addSystem(std::make_unique<RenderingSystem>(m_core));
+    scene->addSystem<CameraResizingSystem>();
+    scene->addSystem<SpriteRenderingSystem>();
+    scene->addSystem<RenderingSystem>();
 
     state.getRegistry().create<MainCamera, TransformComponent, CameraComponent, WindowResizeableComponent>();
 

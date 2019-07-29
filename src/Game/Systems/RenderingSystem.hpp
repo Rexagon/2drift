@@ -7,15 +7,14 @@
 
 namespace game
 {
-class RenderingSystem final : public System
+class RenderingSystem final : public System<SharedState>
 {
 public:
-    explicit RenderingSystem(core::Core &core);
+    explicit RenderingSystem(SharedState &state);
 
-    void update(SharedState &state, double dt);
+    void operator()(SharedState &state, double dt) override;
 
 private:
-
     std::shared_ptr<core::WindowManager> m_windowManager;
 };
 

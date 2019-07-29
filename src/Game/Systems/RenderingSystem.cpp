@@ -11,14 +11,14 @@ using namespace core;
 
 namespace game
 {
-RenderingSystem::RenderingSystem(core::Core &core)
-    : System{core}
-    , m_windowManager{core.get<WindowManager>().lock()}
+RenderingSystem::RenderingSystem(SharedState &state)
+    : System{state}
+    , m_windowManager{state.getCore().get<WindowManager>().lock()}
 {
 }
 
 
-void RenderingSystem::update(SharedState &state, const double dt)
+void RenderingSystem::operator()(game::SharedState &state, double dt)
 {
     auto &registry = state.getRegistry();
     auto &renderingQueue = state.getRenderingQueue();

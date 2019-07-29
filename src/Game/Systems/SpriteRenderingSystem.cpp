@@ -3,19 +3,17 @@
 
 #include "SpriteRenderingSystem.hpp"
 
-#include <Core/Managers/ResourceManager.hpp>
-
 using namespace core;
 
 namespace game
 {
-SpriteRenderingSystem::SpriteRenderingSystem(Core &core)
-    : System{core}
+SpriteRenderingSystem::SpriteRenderingSystem(SharedState &state)
+    : System{state}
 {
 }
 
 
-void SpriteRenderingSystem::update(game::SharedState &state, double dt)
+void SpriteRenderingSystem::operator()(game::SharedState &state, double dt)
 {
     auto &registry = state.getRegistry();
 
