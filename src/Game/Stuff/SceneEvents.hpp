@@ -32,13 +32,4 @@ struct OnLeaveScene
 {
 };
 
-/**
- * @brief       Called on every window event before Scene::onUpdate
- * @param e     Event from window
- */
-struct OnHandleEvent
-{
-    sf::Event e;
-};
-
 }  // namespace game::events

@@ -5,6 +5,8 @@
 
 #include "General.hpp"
 
+#include <iostream>
+
 using namespace core;
 
 namespace game
@@ -13,11 +15,20 @@ CameraResizingSystem::CameraResizingSystem(SharedState &state)
     : System{state}
     , m_windowManager{state.getCore().get<WindowManager>().lock()}
 {
+    state.getDispatcher().sink<sf::Event>().connect<&CameraResizingSystem::handleEvent>(this);
 }
-
 
 void CameraResizingSystem::operator()(game::SharedState &state, double dt)
 {
+    std::cout << "q " << m_isWindowSizeChanged << std::endl;
+
+    if (m_isWindowSizeChanged == false)
+    {
+        return;
+    }
+
+    std::cout << "ASD" << std::endl;
+
     auto windowSize = sf::Vector2f(m_windowManager->getWindow().getSize());
 
     state.getRegistry().view<CameraComponent, WindowResizeableComponent>().each(
@@ -25,6 +36,19 @@ void CameraResizingSystem::operator()(game::SharedState &state, double dt)
             cameraComponent.view.setSize(windowSize);
             cameraComponent.view.setCenter(windowSize * 0.5f);
         });
+
+    m_isWindowSizeChanged = false;
 }
+
+
+void CameraResizingSystem::handleEvent(const sf::Event &e)
+{
+    if (e.type == sf::Event::EventType::Resized)
+    {
+        m_isWindowSizeChanged = true;
+        std::cout << m_isWindowSizeChanged << std::endl;
+    }
+}
+
 
 }  // namespace game

@@ -6,6 +6,8 @@
 #include <entt/entity/registry.hpp>
 #include <entt/signal/dispatcher.hpp>
 
+#include "Game/Stuff/SceneEvents.hpp"
+
 namespace game
 {
 class SharedState

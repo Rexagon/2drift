@@ -5,7 +5,6 @@
 
 #include <Core/Managers/SceneManager.hpp>
 
-#include "SceneEvents.hpp"
 #include "SharedState.hpp"
 #include "System.hpp"
 
@@ -28,6 +27,16 @@ public:
 
 private:
     void update(double dt) override;
+
+    void onInit() override;
+
+    void onClose() override;
+
+    void onEnter() override;
+
+    void onLeave() override;
+
+    void handleEvent(const sf::Event &e) override;
 
     entt::registry m_registry;
     entt::dispatcher m_dispatcher{};
@@ -75,6 +84,41 @@ void Scene<T>::update(double dt)
     {
         updater(m_sharedState, dt);
     }
+}
+
+
+template <typename T>
+void Scene<T>::onInit()
+{
+    m_sharedState.getDispatcher().template trigger<events::OnInitScene>();
+}
+
+
+template <typename T>
+void Scene<T>::onClose()
+{
+    m_sharedState.getDispatcher().template trigger<events::OnCloseScene>();
+}
+
+
+template <typename T>
+void Scene<T>::onEnter()
+{
+    m_sharedState.getDispatcher().template trigger<events::OnEnterScene>();
+}
+
+
+template <typename T>
+void Scene<T>::onLeave()
+{
+    m_sharedState.getDispatcher().template trigger<events::OnLeaveScene>();
+}
+
+
+template <typename T>
+void Scene<T>::handleEvent(const sf::Event &e)
+{
+    m_sharedState.getDispatcher().template trigger<sf::Event>(e);
 }
 
 }  // namespace game
