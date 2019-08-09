@@ -26,6 +26,8 @@ public:
     inline core::RenderingQueue &getRenderingQueue();
 
 private:
+    double dt;
+
     core::Core &m_core;
     entt::registry &m_registry;
     entt::dispatcher &m_dispatcher;

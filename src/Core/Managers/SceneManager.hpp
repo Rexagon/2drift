@@ -19,14 +19,6 @@ class Scene;
  */
 class SceneManager final : public Manager
 {
-    enum class ActionType
-    {
-        PUSH,
-        POP
-    };
-
-    using Action = std::pair<ActionType, std::unique_ptr<Scene>>;
-
 public:
     /**
      * @brief       Create manager with empty scenes stack
@@ -56,30 +48,14 @@ public:
     void update(double dt);
 
     /**
-     * @brief       Apply all requested pushes and pops
-     *
-     * Function behaviour is undefined when it is called from scene.
-     * Should be called after update
-     */
-    void applyActions();
-
-    /**
-     * @brief       Add 'push scene' action to the action queue
+     * @brief       Open specified scene in the end of current frame
      * @param scene Scene object
      */
-    void push(std::unique_ptr<Scene> scene);
-
-    /**
-     * @brief       Add 'pop scene' action to the action queue
-     *
-     * Does not affect stack. Call SceneManager::applyActions
-     */
-    void pop();
+    void openScene(std::unique_ptr<Scene> scene);
 
 private:
-    std::queue<Action> m_actionsQueue;
-
-    std::stack<std::unique_ptr<Scene>> m_scenes;
+    std::unique_ptr<Scene> m_currentScene;
+    std::unique_ptr<Scene> m_nextScene;
 };
 
 
@@ -97,46 +73,32 @@ public:
     virtual ~Scene() = default;
 
     /**
-     * @brief       Called every frame
-     * @param dt    Time in seconds since last frame
-     */
-    virtual void update(double dt)
-    {
-    }
-
-    /**
-     * @brief       Called right before scene is added to stack
-     */
-    virtual void onInit()
-    {
-    }
-
-    /**
-     * @brief       Called right before scene is removed from stack
-     */
-    virtual void onClose()
-    {
-    }
-
-    /**
      * @brief       Called when scene becomes current
      */
-    virtual void onEnter()
+    virtual void init()
     {
     }
 
     /**
      * @brief       Called when scene stops being current
      */
-    virtual void onLeave()
+    virtual void close()
     {
     }
 
     /**
-     * @brief       Called on every window event before Scene::onUpdate
+     * @brief       Called on every window event before Scene::update
      * @param e     Event from window
      */
     virtual void handleEvent(const sf::Event &e)
+    {
+    }
+
+    /**
+     * @brief       Called every frame
+     * @param dt    Time in seconds since last frame
+     */
+    virtual void update(double dt)
     {
     }
 

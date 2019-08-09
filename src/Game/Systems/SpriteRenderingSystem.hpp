@@ -14,7 +14,7 @@ class SpriteRenderingSystem : public System<SharedState>
 public:
     explicit SpriteRenderingSystem(SharedState &state);
 
-    void operator()(SharedState &state, double dt) override;
+    void update(SharedState &state, double dt) override;
 };
 
 

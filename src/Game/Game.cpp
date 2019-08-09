@@ -81,28 +81,22 @@ void Game::run()
             sceneManager->handleEvent(e);
         }
 
-        // Pre update
+        // Update scene
         sceneManager->update(dt);
 
         // Display image
         window.display();
-
-        // Post update
-        sceneManager->applyActions();
     }
 }
 
 
 void Game::createScene()
 {
-    // TODO: make configuring from lua
+    using SceneSystems = Systems<CameraResizingSystem, SpriteRenderingSystem, RenderingSystem>;
 
-    auto scene = std::make_unique<Scene<SharedState>>(m_core);
+    auto scene = std::make_unique<Scene<SharedState, SceneSystems>>(m_core);
+
     auto &state = scene->getState();
-
-    scene->addSystem<CameraResizingSystem>();
-    scene->addSystem<SpriteRenderingSystem>();
-    scene->addSystem<RenderingSystem>();
 
     state.getRegistry().create<MainCamera, TransformComponent, CameraComponent, WindowResizeableComponent>();
 
@@ -113,8 +107,7 @@ void Game::createScene()
 
     // Push created scene
     auto sceneManager = m_core.get<SceneManager>().lock();
-    sceneManager->push(std::move(scene));
-    sceneManager->applyActions();
+    sceneManager->openScene(std::move(scene));
 }
 
 }  // namespace game

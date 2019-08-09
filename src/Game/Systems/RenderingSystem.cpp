@@ -18,7 +18,7 @@ RenderingSystem::RenderingSystem(SharedState &state)
 }
 
 
-void RenderingSystem::operator()(game::SharedState &state, double dt)
+void RenderingSystem::update(game::SharedState &state, double dt)
 {
     auto &registry = state.getRegistry();
     auto &renderingQueue = state.getRenderingQueue();

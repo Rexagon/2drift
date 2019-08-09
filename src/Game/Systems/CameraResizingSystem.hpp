@@ -11,7 +11,7 @@ class CameraResizingSystem : public System<SharedState>
 public:
     explicit CameraResizingSystem(SharedState &core);
 
-    void operator()(SharedState &state, double dt) override;
+    void update(SharedState &state, double dt) override;
 
 private:
     void handleEvent(const sf::Event &e);

@@ -18,16 +18,15 @@ CameraResizingSystem::CameraResizingSystem(SharedState &state)
     state.getDispatcher().sink<sf::Event>().connect<&CameraResizingSystem::handleEvent>(this);
 }
 
-void CameraResizingSystem::operator()(game::SharedState &state, double dt)
-{
-    std::cout << "q " << m_isWindowSizeChanged << std::endl;
 
-    if (m_isWindowSizeChanged == false)
+void CameraResizingSystem::update(game::SharedState &state, double dt)
+{
+    if (!m_isWindowSizeChanged)
     {
         return;
     }
 
-    std::cout << "ASD" << std::endl;
+    std::cout << "Resized" << std::endl;
 
     auto windowSize = sf::Vector2f(m_windowManager->getWindow().getSize());
 
@@ -46,7 +45,6 @@ void CameraResizingSystem::handleEvent(const sf::Event &e)
     if (e.type == sf::Event::EventType::Resized)
     {
         m_isWindowSizeChanged = true;
-        std::cout << m_isWindowSizeChanged << std::endl;
     }
 }
 

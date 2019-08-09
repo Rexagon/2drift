@@ -18,18 +18,4 @@ struct OnCloseScene
 {
 };
 
-/**
- * @brief       Called when scene becomes current
- */
-struct OnEnterScene
-{
-};
-
-/**
- * @brief       Called when scene stops being current
- */
-struct OnLeaveScene
-{
-};
-
 }  // namespace game::events

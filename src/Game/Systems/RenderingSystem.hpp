@@ -12,7 +12,7 @@ class RenderingSystem final : public System<SharedState>
 public:
     explicit RenderingSystem(SharedState &state);
 
-    void operator()(SharedState &state, double dt) override;
+    void update(SharedState &state, double dt) override;
 
 private:
     std::shared_ptr<core::WindowManager> m_windowManager;
