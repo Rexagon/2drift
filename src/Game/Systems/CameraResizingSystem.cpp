@@ -26,14 +26,12 @@ void CameraResizingSystem::update(game::SharedState &state, double /*dt*/)
         return;
     }
 
-    std::cout << "Resized" << std::endl;
-
     auto windowSize = sf::Vector2f(m_windowManager->getWindow().getSize());
 
     state.getRegistry().view<CameraComponent, WindowResizeableComponent>().each(
         [&windowSize](CameraComponent &cameraComponent, const auto &) {
             cameraComponent.view.setSize(windowSize);
-            cameraComponent.view.setCenter(windowSize * 0.5f);
+            cameraComponent.view.setCenter(0.0f, 0.0f);
         });
 
     m_isWindowSizeChanged = false;

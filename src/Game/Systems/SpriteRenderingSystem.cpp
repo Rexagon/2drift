@@ -18,7 +18,7 @@ void SpriteRenderingSystem::update(game::SharedState &state, double /*dt*/)
     auto &registry = state.getRegistry();
 
     registry.view<SpriteComponent>().each(
-        [this, &state, &registry](entt::entity entity, SpriteComponent &spriteComponent) {
+        [&state, &registry](entt::entity entity, SpriteComponent &spriteComponent) {
             sf::RenderStates states;
 
             TransformComponent *transformComponent = registry.try_get<TransformComponent>(entity);
