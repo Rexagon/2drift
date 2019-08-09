@@ -1,6 +1,7 @@
 set(GAME_SRC
         main.cpp
-        Game.cpp
+
+        Scenes/MainScene.cpp
 
         Stuff/SharedState.cpp
 
