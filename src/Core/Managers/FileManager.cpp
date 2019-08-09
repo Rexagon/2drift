@@ -26,10 +26,10 @@ std::vector<char> FileManager::load(const std::string &filename)
     std::vector<char> result;
 
     file.seekg(0, std::ios::end);
-    result.resize(file.tellg());
+    result.resize(static_cast<size_t>(file.tellg()));
 
     file.seekg(0, std::ios::beg);
-    file.read(&result[0], result.size());
+    file.read(&result[0], static_cast<std::streamsize>(result.size()));
 
     file.close();
 

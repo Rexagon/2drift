@@ -14,8 +14,11 @@ add_executable(game ${GAME_SRC})
 target_include_directories(game
         PRIVATE ${CMAKE_SOURCE_DIR}/src)
 
-find_package(EnTT REQUIRED)
-
 target_link_libraries(game core EnTT)
 
-set_target_properties(game PROPERTIES OUTPUT_NAME "2drift")
+set_target_properties(game PROPERTIES
+        OUTPUT_NAME "2drift"
+        RUNTIME_OUTPUT_DIRECTORY ${BUILD_OUTPUT_DIR})
+
+add_custom_command(TARGET game POST_BUILD
+        COMMAND ${CMAKE_COMMAND} -E copy_directory $ENV{SFML_DIR}/../../../bin ${BUILD_OUTPUT_DIR}/)

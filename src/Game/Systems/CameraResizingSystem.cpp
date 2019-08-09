@@ -19,7 +19,7 @@ CameraResizingSystem::CameraResizingSystem(SharedState &state)
 }
 
 
-void CameraResizingSystem::update(game::SharedState &state, double dt)
+void CameraResizingSystem::update(game::SharedState &state, double /*dt*/)
 {
     if (!m_isWindowSizeChanged)
     {

@@ -13,7 +13,7 @@ SpriteRenderingSystem::SpriteRenderingSystem(SharedState &state)
 }
 
 
-void SpriteRenderingSystem::update(game::SharedState &state, double dt)
+void SpriteRenderingSystem::update(game::SharedState &state, double /*dt*/)
 {
     auto &registry = state.getRegistry();
 

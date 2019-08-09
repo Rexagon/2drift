@@ -59,4 +59,30 @@ void SceneManager::openScene(std::unique_ptr<Scene> scene)
     }
 }
 
+
+Scene::Scene(Core &core)
+    : m_core{core}
+{
+}
+
+
+void Scene::init()
+{
+}
+
+
+void Scene::close()
+{
+}
+
+
+void Scene::handleEvent(const sf::Event & /*e*/)
+{
+}
+
+
+void Scene::update(double /*dt*/)
+{
+}
+
 }  // namespace core
