@@ -3,10 +3,6 @@
 
 #include "RenderingSystem.hpp"
 
-#include <entt/entity/helper.hpp>
-
-#include "General.hpp"
-
 using namespace core;
 
 namespace game
@@ -14,30 +10,33 @@ namespace game
 RenderingSystem::RenderingSystem(SharedState &state)
     : System{state}
     , m_windowManager{state.getCore().get<WindowManager>().lock()}
+    , m_renderingManager{state.getCore().get<RenderingManager>().lock()}
+    , m_screenBuffer{state.getCore(), m_windowManager->getSize()}
+    , m_screenMaterial{state.getCore()}
+    , m_screenQuad{}
 {
+    m_screenBuffer.getColorTexture().setFilters(GL_NEAREST, GL_NEAREST);
+
+    m_renderingManager->setClearColor(0.14f, 0.12f, 0.12f);
+
+    m_screenQuad.update(
+        MeshGeometry::createRectangle(glm::vec2{-1.0f, -1.0f}, glm::vec2{1.0f, 1.0f}, MeshGeometry::Position));
 }
 
 
-void RenderingSystem::update(game::SharedState &state, double /*dt*/)
+void RenderingSystem::update(game::SharedState &state, float /*dt*/)
 {
-    auto &registry = state.getRegistry();
     auto &renderingQueue = state.getRenderingQueue();
 
-    // Prepare window
-    auto &window = m_windowManager->getWindow();
-    window.clear(sf::Color{36, 32, 32});
+    const auto &windowSize = m_windowManager->getSize();
 
-    // Find main camera
-    auto mainCameraEntities = registry.view<entt::tag<"main_camera"_hs>>();
-    if (mainCameraEntities.empty())
-    {
-        // There is no main camera on scene
-        return;
-    }
-    auto mainCamera = registry.get<CameraComponent>(*mainCameraEntities.begin());
+    //
+    m_screenBuffer.bind();
+    m_renderingManager->setViewport(glm::vec2{windowSize} * 0.5f, glm::vec2{windowSize} * 0.25f);
 
-    // Apply view
-    window.setView(mainCamera.view);
+    // Clear window
+    glClear(GL_COLOR_BUFFER_BIT);
+
 
     // Sort all layers
     renderingQueue.sort();
@@ -47,12 +46,21 @@ void RenderingSystem::update(game::SharedState &state, double /*dt*/)
     {
         for (const auto &item : layer)
         {
-            window.draw(*item.drawable, item.renderStates);
+            item.material->bind(*item.materialParameters);
+            item.mesh->draw();
         }
     }
 
     // Clear queue
     renderingQueue.clear();
+
+    //
+    m_renderingManager->setCurrentFrameBufferId(0);
+    m_renderingManager->setViewport(windowSize, glm::vec2{});
+    m_screenBuffer.getColorTexture().bind(ScreenMaterial::SCREEN_TEXTURE_SLOT);
+
+    m_screenMaterial.bind();
+    m_screenQuad.draw();
 }
 
 }  // namespace game

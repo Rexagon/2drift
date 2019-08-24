@@ -3,6 +3,8 @@
 
 #include "CarMovementSystem.hpp"
 
+#include <glm/gtx/rotate_vector.hpp>
+
 #include "General.hpp"
 
 using namespace core;
@@ -15,19 +17,18 @@ CarMovementSystem::CarMovementSystem(MainSceneState &state)
 }
 
 
-void CarMovementSystem::update(MainSceneState &state, double dt)
+void CarMovementSystem::update(MainSceneState &state, float dt)
 {
     auto &registry = state.getRegistry();
 
     const auto &input = state.getInput();
 
     auto carEntities = registry.view<TransformComponent, CarComponent>();
-    carEntities.each([&](TransformComponent &transformComponent, const CarComponent &) {
-        sf::Transform transform;
-        transform.translate(0.0f, -static_cast<float>(100.0f * input.throttleAxis * dt));
-        transform.rotate(-static_cast<float>(input.steeringAxis));
+    carEntities.each([&](TransformComponent &transform, const CarComponent &) {
+        const auto direction = glm::vec2{0.0f, 100.0f * input.throttleAxis * dt};
 
-        transformComponent.transform.combine(transform);
+        transform.position += glm::rotate(direction, transform.rotation);
+        transform.rotation += input.steeringAxis * dt;
     });
 }
 

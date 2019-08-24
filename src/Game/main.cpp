@@ -4,9 +4,9 @@
 #include <Core/Managers/InputManager.hpp>
 #include <Core/Managers/ResourceManager.hpp>
 #include <Core/Managers/SceneManager.hpp>
-#include <Core/Managers/WindowManager.hpp>
+#include <Core/Stuff/Time.hpp>
 
-#include "Stuff/Scene.hpp"
+#include <Core/Managers/WindowManager.hpp>
 
 #include "Scenes/MainScene.hpp"
 
@@ -22,9 +22,10 @@ constexpr auto WINDOW_TITLE = "2drift";
 void init(Core &core)
 {
     core.bind<FileManager>();
+    core.bind<WindowManager>(glm::uvec2{1024, 768}, WINDOW_TITLE);
     core.bind<InputManager>();
+    core.bind<RenderingManager>();
     core.bind<ResourceManager>();
-    core.bind<WindowManager>(sf::Vector2u(1024, 768), WINDOW_TITLE);
 
     core.bind<SceneManager>();
 
@@ -42,26 +43,26 @@ void run(Core &core)
     auto windowManager = core.get<WindowManager>().lock();
 
     // Main game loop
-    auto &window = windowManager->getWindow();
-
-    sf::Clock time;
+    auto timeBefore = core::time::now();
 
     while (!core.isPendingStop())
     {
         // Calculate delta time
-        const double dt = static_cast<double>(time.restart().asSeconds());
+        const auto timeAfter = core::time::now();
+        const float dt = core::time::DurationSeconds{timeAfter - timeBefore}.count();
+        timeBefore = timeAfter;
 
         // Prepare managers for frame
         inputManager->reset();
 
         // Handle events
-        sf::Event e{};
-        while (window.pollEvent(e))
+        Event e{};
+        while (windowManager->pollEvent(e))
         {
             // Internal handle
             switch (e.type)
             {
-                case sf::Event::Closed:
+                case Event::Type::Closed:
                     // Close application after this frame
                     core.requestExit();
                     break;
@@ -79,7 +80,7 @@ void run(Core &core)
         sceneManager->update(dt);
 
         // Display image
-        window.display();
+        windowManager->display();
     }
 }
 

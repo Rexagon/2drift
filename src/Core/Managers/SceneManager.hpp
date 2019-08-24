@@ -4,8 +4,7 @@
 #include <queue>
 #include <stack>
 
-#include <SFML/Window/Event.hpp>
-
+#include "Core/Managers/Stuff/Scene.hpp"
 #include "Manager.hpp"
 
 namespace core
@@ -37,7 +36,7 @@ public:
      *
      * Function behaviour is undefined when it is called from scene.
      */
-    void handleEvent(const sf::Event &e);
+    void handleEvent(const Event &e);
 
     /**
      * @brief       Update current scene
@@ -45,7 +44,7 @@ public:
      *
      * Function behaviour is undefined when it is called from scene.
      */
-    void update(double dt);
+    void update(float dt);
 
     /**
      * @brief       Open specified scene in the end of current frame
@@ -57,51 +56,5 @@ private:
     std::unique_ptr<Scene> m_currentScene;
     std::unique_ptr<Scene> m_nextScene;
 };
-
-
-/**
- * @brief   Scene base class
- */
-class Scene
-{
-public:
-    explicit Scene(Core &core);
-
-    virtual ~Scene() = default;
-
-    /**
-     * @brief       Called when scene becomes current
-     */
-    virtual void init();
-
-    /**
-     * @brief       Called when scene stops being current
-     */
-    virtual void close();
-
-    /**
-     * @brief       Called on every window event before Scene::update
-     * @param e     Event from window
-     */
-    virtual void handleEvent(const sf::Event &e);
-
-    /**
-     * @brief       Called every frame
-     * @param dt    Time in seconds since last frame
-     */
-    virtual void update(double dt);
-
-protected:
-    inline Core &getCore();
-
-private:
-    Core &m_core;
-};
-
-
-inline Core &Scene::getCore()
-{
-    return m_core;
-}
 
 }  // namespace core

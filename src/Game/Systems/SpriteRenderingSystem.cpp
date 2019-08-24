@@ -3,34 +3,48 @@
 
 #include "SpriteRenderingSystem.hpp"
 
+#include <glm/gtx/matrix_transform_2d.hpp>
+
+#include <Core/Core.hpp>
+#include <Core/Rendering/Stuff/MeshGeometry.hpp>
+
 using namespace core;
 
 namespace game
 {
 SpriteRenderingSystem::SpriteRenderingSystem(SharedState &state)
     : System{state}
+    , m_windowManager{state.getCore().get<WindowManager>().lock()}
+    , m_material{state.getCore()}
+    , m_spriteMesh{}
 {
+    m_spriteMesh.update(MeshGeometry::createRectangle(glm::vec2{-10.0f, 10.0f}, glm::vec2{10.0f, -10.0f}));
 }
 
 
-void SpriteRenderingSystem::update(game::SharedState &state, double /*dt*/)
+void SpriteRenderingSystem::update(game::SharedState &state, float /*dt*/)
 {
     auto &registry = state.getRegistry();
 
-    registry.view<SpriteComponent>().each(
-        [&state, &registry](entt::entity entity, SpriteComponent &spriteComponent) {
-            sf::RenderStates states;
+    // Find main camera
+    const auto &camera = registry.get<CameraComponent>(*registry.view<MainCamera>().begin());
 
-            TransformComponent *transformComponent = registry.try_get<TransformComponent>(entity);
-            if (transformComponent != nullptr)
-            {
-                states.transform = transformComponent->transform;
-            }
+    m_material.setCameraMatrix(camera.projection);
 
-            state.getRenderingQueue().push(
-                spriteComponent.layer,
-                RenderingQueue::Item{spriteComponent.order, &spriteComponent.rectangleShape, states});
-        });
+    registry.view<SpriteComponent>().each([this, &state, &registry](entt::entity entity,
+                                                                    SpriteComponent &spriteComponent) {
+        auto parameters = std::make_unique<SpriteMaterial::Parameters>();
+
+        const auto *transform = registry.try_get<TransformComponent>(entity);
+        if (transform != nullptr)
+        {
+            parameters->setTransformation(
+                glm::rotate(glm::translate(glm::mat3{1.0f}, transform->position), transform->rotation));
+        }
+
+        state.getRenderingQueue().push(spriteComponent.layer, RenderingQueue::Item{spriteComponent.order, &m_spriteMesh,
+                                                                                   &m_material, std::move(parameters)});
+    });
 }
 
 }  // namespace game

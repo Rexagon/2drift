@@ -10,7 +10,7 @@ class CarMovementSystem final : public System<MainSceneState>
 public:
     explicit CarMovementSystem(MainSceneState &state);
 
-    void update(MainSceneState &state, double dt) override;
+    void update(MainSceneState &state, float dt) override;
 };
 
 

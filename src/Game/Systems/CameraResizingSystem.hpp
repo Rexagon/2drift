@@ -11,10 +11,10 @@ class CameraResizingSystem : public System<SharedState>
 public:
     explicit CameraResizingSystem(SharedState &core);
 
-    void update(SharedState &state, double dt) override;
+    void update(SharedState &state, float dt) override;
 
 private:
-    void handleEvent(const sf::Event &e);
+    void handleEvent(const core::Event &e);
 
     bool m_isWindowSizeChanged = true;
 

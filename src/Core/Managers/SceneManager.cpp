@@ -25,13 +25,13 @@ SceneManager::~SceneManager()
 }
 
 
-void SceneManager::handleEvent(const sf::Event &e)
+void SceneManager::handleEvent(const Event &e)
 {
     m_currentScene->handleEvent(e);
 }
 
 
-void SceneManager::update(double dt)
+void SceneManager::update(float dt)
 {
     m_currentScene->update(dt);
 
@@ -57,32 +57,6 @@ void SceneManager::openScene(std::unique_ptr<Scene> scene)
     {
         m_nextScene = std::move(scene);
     }
-}
-
-
-Scene::Scene(Core &core)
-    : m_core{core}
-{
-}
-
-
-void Scene::init()
-{
-}
-
-
-void Scene::close()
-{
-}
-
-
-void Scene::handleEvent(const sf::Event & /*e*/)
-{
-}
-
-
-void Scene::update(double /*dt*/)
-{
 }
 
 }  // namespace core

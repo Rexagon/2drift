@@ -1,18 +1,28 @@
 set(CORE_SRC
         Core.cpp
 
+        Managers/Stuff/Scene.cpp
         Managers/Manager.cpp
         Managers/WindowManager.cpp
         Managers/InputManager.cpp
         Managers/ResourceManager.cpp
+        Managers/RenderingManager.cpp
         Managers/FileManager.cpp
         Managers/SceneManager.cpp
 
-        Rendering/RenderingQueue.cpp
+        Rendering/FrameBuffer.cpp
+        Rendering/Mesh.cpp
+        Rendering/Material.cpp
+        Rendering/Stuff/MeshGeometry.cpp
+        Rendering/Stuff/RenderingQueue.cpp
+        Rendering/Texture.cpp
+        Rendering/Shader.cpp
 
-        Resources/ResourcesScope.cpp
+        Resources/Stuff/ResourcesScope.cpp
+        Resources/ShaderLoader.cpp
         Resources/TextureLoader.cpp
 
+        Stuff/Keyboard.cpp
         Stuff/Time.cpp)
 
 add_library(core OBJECT ${CORE_SRC})
@@ -20,12 +30,9 @@ add_library(core OBJECT ${CORE_SRC})
 target_include_directories(core
         PRIVATE ${CMAKE_SOURCE_DIR}/src)
 
-target_link_libraries(core PUBLIC
-        sfml-system
-        sfml-window
-        sfml-network
-        sfml-graphics
-        sfml-audio)
+target_link_libraries(core PUBLIC glfw glad glm opengl32 gdi32)
+
+target_compile_definitions(core PUBLIC GLFW_INCLUDE_NONE)
 
 target_compile_features(core PUBLIC cxx_std_17)
 

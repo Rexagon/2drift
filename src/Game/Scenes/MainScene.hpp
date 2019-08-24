@@ -11,12 +11,12 @@ class MainSceneState final : public SharedState
 public:
     struct Input
     {
-        double steeringAxis = 0.0;
+        float steeringAxis = 0.0f;
 
-        double throttleAxis = 0.0;
-        double breakAxis = 0.0;
-        double clutchAxis = 0.0;
-        double handbrakeAxis = 0.0;
+        float throttleAxis = 0.0f;
+        float breakAxis = 0.0f;
+        float clutchAxis = 0.0f;
+        float handbrakeAxis = 0.0f;
     };
 
     explicit MainSceneState(core::Core &core, entt::registry &registry, entt::dispatcher &dispatcher);

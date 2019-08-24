@@ -5,8 +5,6 @@
 
 #include "General.hpp"
 
-#include <iostream>
-
 using namespace core;
 
 namespace game
@@ -15,36 +13,40 @@ CameraResizingSystem::CameraResizingSystem(SharedState &state)
     : System{state}
     , m_windowManager{state.getCore().get<WindowManager>().lock()}
 {
-    state.getDispatcher().sink<sf::Event>().connect<&CameraResizingSystem::handleEvent>(this);
+    state.getDispatcher().sink<Event>().connect<&CameraResizingSystem::handleEvent>(*this);
 }
 
 
-void CameraResizingSystem::update(game::SharedState &state, double /*dt*/)
+void CameraResizingSystem::update(game::SharedState &state, float /*dt*/)
 {
     if (!m_isWindowSizeChanged)
     {
         return;
     }
 
-    auto windowSize = sf::Vector2f(m_windowManager->getWindow().getSize());
+    auto windowSize = m_windowManager->getSize();
 
     state.getRegistry().view<CameraComponent, WindowResizeableComponent>().each(
-        [&windowSize](CameraComponent &cameraComponent, const auto &) {
-            cameraComponent.view.setSize(windowSize);
-            cameraComponent.view.setCenter(0.0f, 0.0f);
+        [&windowSize](CameraComponent &camera, const auto &) {
+            const auto size = camera.zoom * glm::vec2{windowSize};
+
+            camera.projection = glm::mat3{
+                2.0f / size.x, 0.0f,          0.0f,  // row 0
+                0.0f,          2.0f / size.y, 0.0f,  // row 1
+                0.0f,          0.0f,          1.0f   // row 2
+            };
         });
 
     m_isWindowSizeChanged = false;
 }
 
 
-void CameraResizingSystem::handleEvent(const sf::Event &e)
+void CameraResizingSystem::handleEvent(const Event &e)
 {
-    if (e.type == sf::Event::EventType::Resized)
+    if (e.type == Event::Type::Resized)
     {
         m_isWindowSizeChanged = true;
     }
 }
-
 
 }  // namespace game

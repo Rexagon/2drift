@@ -21,22 +21,22 @@ InputSystem::InputSystem(MainSceneState &state)
 }
 
 
-void InputSystem::update(MainSceneState &state, double dt)
+void InputSystem::update(MainSceneState &state, float dt)
 {
     auto &input = state.getInput();
 
-    updateHalfAxis(input.throttleAxis, sf::Keyboard::Up, dt, THROTTLE_AXIS_SPEED);
-    updateHalfAxis(input.breakAxis, sf::Keyboard::Down, dt, THROTTLE_AXIS_SPEED);
-    updateHalfAxis(input.clutchAxis, sf::Keyboard::Space, dt, THROTTLE_AXIS_SPEED);
-    updateHalfAxis(input.handbrakeAxis, sf::Keyboard::C, dt, THROTTLE_AXIS_SPEED);
+    updateHalfAxis(input.throttleAxis, keyboard::Up, dt, THROTTLE_AXIS_SPEED);
+    updateHalfAxis(input.breakAxis, keyboard::Down, dt, THROTTLE_AXIS_SPEED);
+    updateHalfAxis(input.clutchAxis, keyboard::Space, dt, THROTTLE_AXIS_SPEED);
+    updateHalfAxis(input.handbrakeAxis, keyboard::C, dt, THROTTLE_AXIS_SPEED);
 
-    updateFullAxis(input.steeringAxis, sf::Keyboard::Left, sf::Keyboard::Right, dt, STEERING_AXIS_SPEED);
+    updateFullAxis(input.steeringAxis, keyboard::Left, keyboard::Right, dt, STEERING_AXIS_SPEED);
 }
 
 
-void InputSystem::updateHalfAxis(double &axis, sf::Keyboard::Key key, double dt, double speed, double min, double max)
+void InputSystem::updateHalfAxis(float &axis, keyboard::Key key, float dt, float speed, float min, float max)
 {
-    auto change = 0.0;
+    auto change = 0.0f;
     if (m_inputManager->getKey(key))
     {
         change = speed;
@@ -50,10 +50,15 @@ void InputSystem::updateHalfAxis(double &axis, sf::Keyboard::Key key, double dt,
 }
 
 
-void InputSystem::updateFullAxis(
-    double &axis, sf::Keyboard::Key upKey, sf::Keyboard::Key downKey, double dt, double speed, double min, double max)
+void InputSystem::updateFullAxis(float &axis,
+                                 keyboard::Key upKey,
+                                 keyboard::Key downKey,
+                                 float dt,
+                                 float speed,
+                                 float min,
+                                 float max)
 {
-    auto change = 0.0;
+    auto change = 0.0f;
     if (m_inputManager->getKey(upKey))
     {
         change += speed;
@@ -65,6 +70,5 @@ void InputSystem::updateFullAxis(
 
     axis = std::clamp(axis + change * dt, min, max);
 }
-
 
 }  // namespace game

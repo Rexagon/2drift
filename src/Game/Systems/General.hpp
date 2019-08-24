@@ -1,7 +1,5 @@
 #pragma once
 
-#include <SFML/Graphics/Transform.hpp>
-#include <SFML/Graphics/View.hpp>
 #include <entt/entity/helper.hpp>
 
 namespace game
@@ -10,13 +8,16 @@ namespace game
 
 struct TransformComponent
 {
-    sf::Transform transform;
+    glm::vec2 position{0.0f, 0.0f};
+    float rotation = 0.0f;
+    glm::vec2 scale{1.0f, 1.0f};
 };
 
 
 struct CameraComponent
 {
-    sf::View view;
+    float zoom = 1.0f;
+    glm::mat3 projection;
 };
 
 

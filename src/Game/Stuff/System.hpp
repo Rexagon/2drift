@@ -20,7 +20,7 @@ public:
 
     virtual ~System() = default;
 
-    virtual void update(T &t, double dt) = 0;
+    virtual void update(T &t, float dt) = 0;
 
 protected:
     inline T &getState();

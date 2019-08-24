@@ -1,7 +1,7 @@
 #pragma once
 
 #include <Core/Core.hpp>
-#include <Core/Rendering/RenderingQueue.hpp>
+#include <Core/Rendering/Stuff/RenderingQueue.hpp>
 
 #include <entt/entity/registry.hpp>
 #include <entt/signal/dispatcher.hpp>
@@ -26,8 +26,6 @@ public:
     inline core::RenderingQueue &getRenderingQueue();
 
 private:
-    double dt;
-
     core::Core &m_core;
     entt::registry &m_registry;
     entt::dispatcher &m_dispatcher;

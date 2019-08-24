@@ -2,8 +2,7 @@
 
 #include <bitset>
 
-#include <SFML/Window/Event.hpp>
-
+#include "Core/Stuff/Event.hpp"
 #include "Manager.hpp"
 
 namespace core
@@ -32,28 +31,28 @@ public:
      * @brief       Apply event on current input state
      * @param e     Event from window
      */
-    void handleEvent(const sf::Event &e);
+    void handleEvent(const Event &e);
 
-    bool getKey(sf::Keyboard::Key key) const;
-    bool getKeyDown(sf::Keyboard::Key key) const;
-    bool getKeyUp(sf::Keyboard::Key key) const;
+    bool getKey(uint16_t key) const;
+    bool getKeyDown(uint16_t key) const;
+    bool getKeyUp(uint16_t key) const;
 
-    bool getMouseButton(sf::Mouse::Button button) const;
-    bool getMouseButtonDown(sf::Mouse::Button button) const;
-    bool getMouseButtonUp(sf::Mouse::Button button) const;
+    bool getMouseButton(uint8_t button) const;
+    bool getMouseButtonDown(uint8_t button) const;
+    bool getMouseButtonUp(uint8_t button) const;
 
-    sf::Vector2i getMousePosition() const;
-    sf::Vector2i getMousePositionDelta() const;
+    const glm::vec2 &getMousePosition() const;
+    glm::vec2 getMousePositionDelta() const;
 
 private:
-    std::bitset<sf::Keyboard::KeyCount> m_lastKeyboardState{};
-    std::bitset<sf::Keyboard::KeyCount> m_currentKeyboardState{};
+    std::bitset<keyboard::Key::Last> m_lastKeyboardState{};
+    std::bitset<keyboard::Key::Last> m_currentKeyboardState{};
 
-    std::bitset<sf::Mouse::ButtonCount> m_lastMouseButtonsState{};
-    std::bitset<sf::Mouse::ButtonCount> m_currentMouseButtonsState{};
+    std::bitset<mouse::Button::Last> m_lastMouseButtonsState{};
+    std::bitset<mouse::Button::Last> m_currentMouseButtonsState{};
 
-    sf::Vector2i m_lastMousePosition;
-    sf::Vector2i m_currentMousePosition;
+    glm::vec2 m_lastMousePosition{};
+    glm::vec2 m_currentMousePosition{};
 };
 
 }  // namespace core

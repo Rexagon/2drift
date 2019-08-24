@@ -1,6 +1,9 @@
 set(GAME_SRC
         main.cpp
 
+        Rendering/ScreenMaterial.cpp
+        Rendering/SpriteMaterial.cpp
+
         Scenes/MainScene.cpp
 
         Stuff/SharedState.cpp
@@ -23,4 +26,4 @@ set_target_properties(game PROPERTIES
         RUNTIME_OUTPUT_DIRECTORY ${BUILD_OUTPUT_DIR})
 
 add_custom_command(TARGET game POST_BUILD
-        COMMAND ${CMAKE_COMMAND} -E copy_directory $ENV{SFML_DIR}/../../../bin ${BUILD_OUTPUT_DIR}/)
+        COMMAND ${CMAKE_COMMAND} -E copy_directory ${CMAKE_SOURCE_DIR}/res ${BUILD_OUTPUT_DIR}/data)

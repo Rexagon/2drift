@@ -3,8 +3,6 @@
 
 #include "TextureLoader.hpp"
 
-#include <SFML/Graphics/Texture.hpp>
-
 #include "Core/Core.hpp"
 
 namespace core
@@ -24,15 +22,17 @@ TextureLoader::TextureLoader(const std::shared_ptr<FileManager> &fileManager, co
 
 std::shared_ptr<void> TextureLoader::operator()()
 {
-    const auto data = m_fileManager->load(m_path);
+    //    const auto data = m_fileManager->load(m_path);
+    //
+    //    auto texture = std::make_shared<sf::Texture>();
+    //    if (!texture->loadFromMemory(data.data(), data.size()))
+    //    {
+    //        throw std::runtime_error{"Unable to load texture: " + m_path};
+    //    }
+    //
+    //    return texture;
 
-    auto texture = std::make_shared<sf::Texture>();
-    if (!texture->loadFromMemory(data.data(), data.size()))
-    {
-        throw std::runtime_error{"Unable to load texture: " + m_path};
-    }
-
-    return texture;
+    return nullptr;
 }
 
 }  // namespace core

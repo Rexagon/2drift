@@ -10,6 +10,16 @@
 #include "Game/Systems/RenderingSystem.hpp"
 #include "Game/Systems/SpriteRenderingSystem.hpp"
 
+struct Comp1
+{
+    float a = 0.0f;
+};
+
+struct Comp2
+{
+    float b = 0.0f;
+};
+
 namespace game
 {
 MainSceneState::MainSceneState(core::Core &core, entt::registry &registry, entt::dispatcher &dispatcher)
@@ -17,11 +27,10 @@ MainSceneState::MainSceneState(core::Core &core, entt::registry &registry, entt:
 {
 }
 
-
 std::unique_ptr<core::Scene> createMainScene(core::Core &core)
 {
     using SceneSystems =
-        Systems<InputSystem, CarMovementSystem, CameraResizingSystem, SpriteRenderingSystem, RenderingSystem>;
+        Systems<InputSystem, CameraResizingSystem, CarMovementSystem, SpriteRenderingSystem, RenderingSystem>;
 
     auto scene = std::make_unique<Scene<MainSceneState, SceneSystems>>(core);
 
@@ -29,26 +38,20 @@ std::unique_ptr<core::Scene> createMainScene(core::Core &core)
     auto &registry = state.getRegistry();
 
     // Create camera
-    sf::View cameraView{};
-    cameraView.zoom(0.5f);
-
     auto cameraEntity = registry.create();
-    registry.assign<TransformComponent>(cameraEntity);
-    registry.assign<CameraComponent>(cameraEntity, CameraComponent{cameraView});
-    registry.assign<WindowResizeableComponent>(cameraEntity);
     registry.assign<MainCamera>(cameraEntity);
+    registry.assign<TransformComponent>(cameraEntity);
+    registry.assign<WindowResizeableComponent>(cameraEntity);
+    registry.assign<CameraComponent>(cameraEntity, CameraComponent{});
 
     // Create car
-    sf::RectangleShape rectangle{sf::Vector2f{40.0f, 100.0f}};
-    rectangle.setOrigin(15.0f, 50.0f);
-
-    auto spriteEntity = state.getRegistry().create();
+    auto spriteEntity = registry.create();
     registry.assign<TransformComponent>(spriteEntity);
     registry.assign<CarComponent>(spriteEntity);
-    registry.assign<SpriteComponent>(spriteEntity, SpriteComponent{RenderingLayer::GROUND, 0, rectangle});
-
+    registry.assign<SpriteComponent>(spriteEntity,
+                                     SpriteComponent{RenderingLayer::GROUND, 0, glm::vec2{40.0f, 100.0f}});
 
     return scene;
-}
+}  // namespace game
 
 }  // namespace game
