@@ -9,7 +9,7 @@ namespace core
 {
 FrameBuffer::FrameBuffer(Core &core, const glm::uvec2 &size)
     : m_renderingManager{core.get<RenderingManager>().lock()}
-    , m_colorTexture{core, size.x, size.y, GL_RGBA, GL_RGBA, GL_UNSIGNED_BYTE, nullptr}
+    , m_colorTexture{core, size, GL_RGBA, GL_RGBA, GL_UNSIGNED_BYTE, nullptr}
 {
     glGenFramebuffers(1, &m_id);
 
@@ -32,7 +32,7 @@ void FrameBuffer::bind()
 
 void FrameBuffer::resize(const glm::uvec2 &size)
 {
-    m_colorTexture.resize(size.x, size.y);
+    m_colorTexture.resize(size);
 }
 
 

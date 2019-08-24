@@ -60,9 +60,9 @@ public:
     bool has() const;
 
 private:
-    bool m_isPendingStop;
+    bool m_isPendingStop{false};
 
-    std::unordered_map<std::type_index, std::shared_ptr<Manager>> m_managers;
+    std::unordered_map<std::type_index, std::shared_ptr<Manager>> m_managers{};
 };
 
 

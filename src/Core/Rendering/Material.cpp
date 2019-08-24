@@ -18,38 +18,22 @@ Material::Material(Core &core, const RenderingParameters &renderingParameters, c
 void Material::bind() const
 {
     assert(m_shader != nullptr);
-
-    m_renderingManager->setRenderingParameters(m_renderingParameters);
     m_shader->bind();
+    m_renderingManager->setRenderingParameters(m_renderingParameters);
 
     onBind();
 }
 
 
-void Material::bind(const MaterialParametersBase &materialParameters) const
+void Material::bind(const ShaderParameters &shaderParameters) const
 {
     assert(m_shader != nullptr);
-
-    m_renderingManager->setRenderingParameters(m_renderingParameters);
     m_shader->bind();
+    m_renderingManager->setRenderingParameters(m_renderingParameters);
 
-    materialParameters.apply(*m_shader);
+    shaderParameters.apply(*m_shader);
 
     onBind();
-}
-
-
-Shader &Material::getShader() const
-{
-    assert(m_shader != nullptr);
-
-    return *m_shader;
-}
-
-
-void Material::setShader(const std::shared_ptr<Shader> &shader)
-{
-    m_shader = shader;
 }
 
 
@@ -61,6 +45,30 @@ void Material::onBind() const
 RenderingManager &Material::getRenderingManager() const
 {
     return *m_renderingManager;
+}
+
+
+void Material::setRenderingParameters(const core::RenderingParameters &renderingParameters)
+{
+    m_renderingParameters = renderingParameters;
+}
+
+
+const RenderingParameters &Material::getRenderingParameters() const
+{
+    return m_renderingParameters;
+}
+
+
+void Material::setShader(const std::shared_ptr<Shader> &shader)
+{
+    m_shader = shader;
+}
+
+
+Shader &Material::getShader() const
+{
+    return *m_shader;
 }
 
 }  // namespace core

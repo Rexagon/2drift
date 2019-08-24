@@ -35,7 +35,7 @@ protected:
 private:
     Core &m_core;
 
-    bool m_isInitialized;
+    bool m_isInitialized{false};
 };
 
 

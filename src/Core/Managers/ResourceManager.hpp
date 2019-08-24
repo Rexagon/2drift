@@ -134,8 +134,8 @@ public:
     static inline Key createKey(const std::string &name);
 
 private:
-    std::unordered_map<Key, Loader, KeyHash> m_loaders;
-    mutable std::unordered_map<Key, std::shared_ptr<void>, KeyHash> m_resources;
+    std::unordered_map<Key, Loader, KeyHash> m_loaders{};
+    mutable std::unordered_map<Key, std::shared_ptr<void>, KeyHash> m_resources{};
 };
 
 

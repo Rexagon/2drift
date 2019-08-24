@@ -39,17 +39,16 @@ std::unique_ptr<core::Scene> createMainScene(core::Core &core)
 
     // Create camera
     auto cameraEntity = registry.create();
-    registry.assign<MainCamera>(cameraEntity);
+    registry.assign<MainCameraTag>(cameraEntity);
+    registry.assign<WindowResizeableCameraTag>(cameraEntity);
     registry.assign<TransformComponent>(cameraEntity);
-    registry.assign<WindowResizeableComponent>(cameraEntity);
-    registry.assign<CameraComponent>(cameraEntity, CameraComponent{});
+    registry.assign<CameraComponent>(cameraEntity);
 
     // Create car
     auto spriteEntity = registry.create();
     registry.assign<TransformComponent>(spriteEntity);
     registry.assign<CarComponent>(spriteEntity);
-    registry.assign<SpriteComponent>(spriteEntity,
-                                     SpriteComponent{RenderingLayer::GROUND, 0, glm::vec2{40.0f, 100.0f}});
+    registry.assign<SpriteComponent>(spriteEntity, SpriteComponent{RenderingLayer::GROUND, 0, glm::vec2{34.0f, 89.0f}});
 
     return scene;
 }  // namespace game

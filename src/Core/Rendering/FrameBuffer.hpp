@@ -24,7 +24,8 @@ public:
 private:
     std::shared_ptr<RenderingManager> m_renderingManager;
 
-    GLuint m_id = 0;
+    GLuint m_id{0};
+
     Texture m_colorTexture;
 };
 

@@ -1,7 +1,6 @@
 #pragma once
 
-#include "Shader.hpp"
-#include "Stuff/MaterialParameters.hpp"
+#include "Core/Rendering/Stuff/ShaderParameters.hpp"
 #include "Stuff/RenderingParameters.hpp"
 
 namespace core
@@ -16,19 +15,22 @@ public:
     virtual ~Material() = default;
 
     void bind() const;
-    void bind(const MaterialParametersBase &materialParameters) const;
-
-    Shader &getShader() const;
+    void bind(const ShaderParameters &shaderParameters) const;
 
 protected:
-    void setShader(const std::shared_ptr<Shader> &shader);
-
     virtual void onBind() const;
 
     RenderingManager &getRenderingManager() const;
 
+    void setRenderingParameters(const RenderingParameters &renderingParameters);
+    const RenderingParameters &getRenderingParameters() const;
+
+    void setShader(const std::shared_ptr<Shader> &shader);
+    Shader &getShader() const;
+
 private:
     std::shared_ptr<RenderingManager> m_renderingManager;
+
     RenderingParameters m_renderingParameters;
     std::shared_ptr<Shader> m_shader;
 };

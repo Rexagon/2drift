@@ -303,12 +303,12 @@ private:
 
     GLint m_viewport[4]{};
     GLclampf m_clearColor[4]{0.0f, 0.0f, 0.0f, 1.0f};
-    float m_clearDepth = 1.0f;
+    float m_clearDepth{1.0f};
 
-    GLuint m_currentShaderId = 0;
-    GLuint m_currentFrameBufferId = 0;
+    GLuint m_currentShaderId{0};
+    GLuint m_currentFrameBufferId{0};
 
-    size_t m_activeTextureUnit = 0;
+    size_t m_activeTextureUnit{0};
 };
 
 }  // namespace core

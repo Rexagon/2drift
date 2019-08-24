@@ -73,17 +73,17 @@ public:
     GLenum getBufferUsage() const;
 
 private:
-    GLuint m_vao = 0;
-    GLuint m_vbo = 0;
-    GLuint m_ebo = 0;
+    GLuint m_vao{0};
+    GLuint m_vbo{0};
+    GLuint m_ebo{0};
 
-    size_t m_indexCount = 0;
-    size_t m_vertexCount = 0;
-    size_t m_attributeCount = 0;
+    size_t m_indexCount{0};
+    size_t m_vertexCount{0};
+    size_t m_attributeCount{0};
 
-    GLenum m_topology = 0;
+    GLenum m_topology{0};
 
-    GLenum m_bufferUsage = GL_STATIC_DRAW;
+    GLenum m_bufferUsage{GL_STATIC_DRAW};
 };
 
 }  // namespace core

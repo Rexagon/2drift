@@ -1,7 +1,7 @@
 #pragma once
 
 #include <Core/Rendering/Material.hpp>
-#include <Core/Rendering/Stuff/MaterialParameters.hpp>
+#include <Core/Rendering/Stuff/ShaderParameters.hpp>
 #include <Core/Resources/Stuff/ResourcesScope.hpp>
 
 namespace game
@@ -9,17 +9,21 @@ namespace game
 class SpriteMaterial final : public core::Material
 {
 public:
-    class Parameters : public core::MaterialParametersBase
+    class Parameters : public core::ShaderParameters
     {
     public:
         void apply(core::Shader &shader) const override;
 
-        void setTransformation(const glm::mat3 &transformation);
+        void setSize(const glm::vec2 &size);
         void setColor(const glm::vec4 &color);
 
+        void setTransformation(const glm::mat3 &transformation);
+
     private:
-        glm::mat3 m_transformation{1.0f};
+        glm::vec2 m_size{1.0f, 1.0f};
         glm::vec4 m_color{0.0f, 0.0f, 0.0f, 1.0f};
+
+        glm::mat3 m_transformation{1.0f};
     };
 
     explicit SpriteMaterial(core::Core &core);

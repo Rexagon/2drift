@@ -3,8 +3,8 @@
 #include <memory>
 #include <queue>
 
-#include <glad/glad.h>
 #include <GLFW/glfw3.h>
+#include <glad/glad.h>
 #include <glm/vec2.hpp>
 
 #include "Core/Stuff/Event.hpp"
@@ -52,11 +52,11 @@ private:
 
     glm::uvec2 m_size;
     std::string m_title;
-    bool m_isVsyncEnabled = true;
+    bool m_isVsyncEnabled{true};
 
-    GLFWwindow *m_window = nullptr;
+    GLFWwindow *m_window{nullptr};
 
-    std::queue<Event> m_events;
+    std::queue<Event> m_events{};
 };
 
 }  // namespace core

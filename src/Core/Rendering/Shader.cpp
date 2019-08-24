@@ -18,41 +18,41 @@ Shader::~Shader()
 {
     glDeleteProgram(m_id);
 
-    for (auto &shader : m_shaders)
+    for (auto &part : m_parts)
     {
-        glDeleteShader(shader);
+        glDeleteShader(part);
     }
 }
 
 
 bool Shader::attachPart(const std::vector<char> &source, const GLenum type, std::string &infoLog)
 {
-    const GLuint shader = glCreateShader(type);
+    const GLuint part = glCreateShader(type);
 
     auto data = source.data();
     const auto size = static_cast<GLint>(source.size());
 
-    glShaderSource(shader, 1, &data, &size);
+    glShaderSource(part, 1, &data, &size);
 
-    glCompileShader(shader);
+    glCompileShader(part);
 
     GLint compilationStatus;
-    glGetShaderiv(shader, GL_COMPILE_STATUS, &compilationStatus);
+    glGetShaderiv(part, GL_COMPILE_STATUS, &compilationStatus);
     if (compilationStatus == GL_FALSE)
     {
         GLint infoLogLength;
-        glGetShaderiv(shader, GL_INFO_LOG_LENGTH, &infoLogLength);
+        glGetShaderiv(part, GL_INFO_LOG_LENGTH, &infoLogLength);
 
         infoLog.resize(static_cast<size_t>(infoLogLength));
-        glGetShaderInfoLog(shader, infoLogLength, nullptr, &infoLog[0]);
+        glGetShaderInfoLog(part, infoLogLength, nullptr, &infoLog[0]);
 
-        glDeleteShader(shader);
+        glDeleteShader(part);
 
         return false;
     }
 
-    m_shaders.push_back(shader);
-    glAttachShader(m_id, shader);
+    m_parts.push_back(part);
+    glAttachShader(m_id, part);
 
     return true;
 }

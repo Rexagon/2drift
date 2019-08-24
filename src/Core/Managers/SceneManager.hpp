@@ -53,8 +53,8 @@ public:
     void openScene(std::unique_ptr<Scene> scene);
 
 private:
-    std::unique_ptr<Scene> m_currentScene;
-    std::unique_ptr<Scene> m_nextScene;
+    std::unique_ptr<Scene> m_currentScene{nullptr};
+    std::unique_ptr<Scene> m_nextScene{nullptr};
 };
 
 }  // namespace core

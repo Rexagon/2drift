@@ -26,7 +26,7 @@ void CameraResizingSystem::update(game::SharedState &state, float /*dt*/)
 
     auto windowSize = m_windowManager->getSize();
 
-    state.getRegistry().view<CameraComponent, WindowResizeableComponent>().each(
+    state.getRegistry().view<CameraComponent, WindowResizeableCameraTag>().each(
         [&windowSize](CameraComponent &camera, const auto &) {
             const auto size = camera.zoom * glm::vec2{windowSize};
 

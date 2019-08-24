@@ -58,8 +58,6 @@ public:
     /**
      * @brief               Set vertex attribute information
      *
-     * @a name must be the same as in shader program.
-     *
      * @param index         Attribute layout index
      * @param name          Attribute name
      */
@@ -102,9 +100,9 @@ public:
 private:
     std::shared_ptr<RenderingManager> m_renderingManager;
 
-    GLuint m_id;
+    GLuint m_id{0};
 
-    std::vector<GLuint> m_shaders{};
+    std::vector<GLuint> m_parts{};
     std::unordered_map<std::string, GLint> m_uniformLocations{};
 };
 }  // namespace core

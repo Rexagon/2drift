@@ -1,7 +1,7 @@
 #pragma once
 
 #include <Core/Rendering/Material.hpp>
-#include <Core/Rendering/Stuff/MaterialParameters.hpp>
+#include <Core/Rendering/Stuff/ShaderParameters.hpp>
 #include <Core/Resources/Stuff/ResourcesScope.hpp>
 
 namespace game

@@ -30,13 +30,14 @@ void RenderingSystem::update(game::SharedState &state, float /*dt*/)
 
     const auto &windowSize = m_windowManager->getSize();
 
+    // First pass
     //
+
     m_screenBuffer.bind();
     m_renderingManager->setViewport(glm::vec2{windowSize} * 0.5f, glm::vec2{windowSize} * 0.25f);
 
-    // Clear window
+    // Clear screen
     glClear(GL_COLOR_BUFFER_BIT);
-
 
     // Sort all layers
     renderingQueue.sort();
@@ -54,7 +55,9 @@ void RenderingSystem::update(game::SharedState &state, float /*dt*/)
     // Clear queue
     renderingQueue.clear();
 
+    // Second pass
     //
+
     m_renderingManager->setCurrentFrameBufferId(0);
     m_renderingManager->setViewport(windowSize, glm::vec2{});
     m_screenBuffer.getColorTexture().bind(ScreenMaterial::SCREEN_TEXTURE_SLOT);

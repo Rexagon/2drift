@@ -1,5 +1,7 @@
 #pragma once
 
+#include <entt/entity/helper.hpp>
+
 #include <Core/Managers/WindowManager.hpp>
 #include <Core/Rendering/FrameBuffer.hpp>
 #include <Core/Rendering/Stuff/RenderingQueue.hpp>

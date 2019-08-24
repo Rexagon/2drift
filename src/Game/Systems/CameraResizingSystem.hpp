@@ -1,5 +1,7 @@
 #pragma once
 
+#include <entt/entity/helper.hpp>
+
 #include <Core/Managers/WindowManager.hpp>
 
 #include "Game/Stuff/System.hpp"
@@ -21,8 +23,6 @@ private:
     std::shared_ptr<core::WindowManager> m_windowManager;
 };
 
-struct WindowResizeableComponent
-{
-};
+using WindowResizeableCameraTag = entt::tag<"window_resizeable_camera"_hs>;
 
 }  // namespace game

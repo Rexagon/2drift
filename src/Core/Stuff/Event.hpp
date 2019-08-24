@@ -16,14 +16,14 @@ struct Event
 
     struct KeyEvent
     {
-        int scancode = 0;
-        uint16_t key = 0;
-        uint8_t mods = 0;
+        int scancode{0};
+        uint16_t key{0};
+        uint8_t mods{0};
     };
 
     struct TextEvent
     {
-        uint32_t code = 0;
+        uint32_t code{0};
     };
 
     struct MouseMoveEvent
@@ -33,8 +33,8 @@ struct Event
 
     struct MouseButtonEvent
     {
-        uint8_t button = 0;
-        uint8_t mods = 0;
+        uint8_t button{0};
+        uint8_t mods{0};
     };
 
     struct ScrollEvent

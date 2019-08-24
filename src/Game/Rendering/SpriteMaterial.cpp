@@ -33,26 +33,6 @@ constexpr const auto RENDERING_PARAMETERS = RenderingParameters{
 
 namespace game
 {
-void SpriteMaterial::Parameters::apply(core::Shader &shader) const
-{
-    shader.bind();
-    shader.setUniform("uTransformationMatrix", m_transformation);
-    shader.setUniform("uColor", m_color);
-}
-
-
-void SpriteMaterial::Parameters::setTransformation(const glm::mat3 &transformation)
-{
-    m_transformation = transformation;
-}
-
-
-void SpriteMaterial::Parameters::setColor(const glm::vec4 &color)
-{
-    m_color = color;
-}
-
-
 SpriteMaterial::SpriteMaterial(Core &core)
     : Material{core, RENDERING_PARAMETERS, nullptr}
     , m_resourcesScope{core}
@@ -75,6 +55,35 @@ void SpriteMaterial::onBind() const
     Material::onBind();
 
     getShader().setUniform("uCameraProjectionMatrix", m_cameraMatrix);
+}
+
+// SpriteMaterial::Parameters
+//
+
+void SpriteMaterial::Parameters::apply(core::Shader &shader) const
+{
+    shader.bind();
+    shader.setUniform("uSize", m_size);
+    shader.setUniform("uColor", m_color);
+    shader.setUniform("uTransformationMatrix", m_transformation);
+}
+
+
+void SpriteMaterial::Parameters::setSize(const glm::vec2 &size)
+{
+    m_size = size;
+}
+
+
+void SpriteMaterial::Parameters::setColor(const glm::vec4 &color)
+{
+    m_color = color;
+}
+
+
+void SpriteMaterial::Parameters::setTransformation(const glm::mat3 &transformation)
+{
+    m_transformation = transformation;
 }
 
 }  // namespace game

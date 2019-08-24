@@ -38,7 +38,7 @@ public:
 private:
     std::shared_ptr<ResourceManager> m_resourceManager;
 
-    std::unordered_set<ResourceManager::Key, ResourceManager::KeyHash> m_resources;
+    std::unordered_set<ResourceManager::Key, ResourceManager::KeyHash> m_resources{};
 };
 
 

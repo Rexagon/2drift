@@ -18,7 +18,7 @@ SpriteRenderingSystem::SpriteRenderingSystem(SharedState &state)
     , m_material{state.getCore()}
     , m_spriteMesh{}
 {
-    m_spriteMesh.update(MeshGeometry::createRectangle(glm::vec2{-10.0f, 10.0f}, glm::vec2{10.0f, -10.0f}));
+    m_spriteMesh.update(MeshGeometry::createRectangle(glm::vec2{-0.5f, 0.5f}, glm::vec2{0.5f, -0.5f}));
 }
 
 
@@ -27,7 +27,7 @@ void SpriteRenderingSystem::update(game::SharedState &state, float /*dt*/)
     auto &registry = state.getRegistry();
 
     // Find main camera
-    const auto &camera = registry.get<CameraComponent>(*registry.view<MainCamera>().begin());
+    const auto &camera = registry.get<CameraComponent>(*registry.view<MainCameraTag>().begin());
 
     m_material.setCameraMatrix(camera.projection);
 
@@ -35,11 +35,14 @@ void SpriteRenderingSystem::update(game::SharedState &state, float /*dt*/)
                                                                     SpriteComponent &spriteComponent) {
         auto parameters = std::make_unique<SpriteMaterial::Parameters>();
 
+        parameters->setSize(spriteComponent.size);
+
         const auto *transform = registry.try_get<TransformComponent>(entity);
         if (transform != nullptr)
         {
             parameters->setTransformation(
-                glm::rotate(glm::translate(glm::mat3{1.0f}, transform->position), transform->rotation));
+                glm::scale(glm::rotate(glm::translate(glm::mat3{1.0f}, transform->position), transform->rotation),
+                           transform->scale));
         }
 
         state.getRenderingQueue().push(spriteComponent.layer, RenderingQueue::Item{spriteComponent.order, &m_spriteMesh,

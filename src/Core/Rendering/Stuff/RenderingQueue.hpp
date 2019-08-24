@@ -5,7 +5,7 @@
 
 #include "Core/Rendering/Material.hpp"
 #include "Core/Rendering/Mesh.hpp"
-#include "MaterialParameters.hpp"
+#include "ShaderParameters.hpp"
 
 namespace core
 {
@@ -20,7 +20,7 @@ public:
         int8_t order = 0;
         Mesh *mesh = nullptr;
         Material *material = nullptr;
-        std::unique_ptr<MaterialParametersBase> materialParameters{};
+        std::unique_ptr<ShaderParameters> materialParameters{};
     };
 
     void push(uint8_t layer, Item &&item);
@@ -32,7 +32,7 @@ public:
     const std::map<uint8_t, std::vector<Item>> &getLayers() const;
 
 private:
-    std::map<uint8_t, std::vector<Item>> m_layers;
+    std::map<uint8_t, std::vector<Item>> m_layers{};
 };
 
 }  // namespace core
