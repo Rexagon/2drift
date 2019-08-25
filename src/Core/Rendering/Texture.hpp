@@ -31,7 +31,7 @@ public:
      */
     explicit Texture(Core &core,
                      const glm::uvec2 &size,
-                     GLint internalFormat = GL_RGBA,
+                     GLint internalFormat = GL_RGBA8,
                      GLenum format = GL_RGBA,
                      GLenum pixelType = GL_UNSIGNED_BYTE,
                      const void *data = nullptr);
@@ -42,7 +42,7 @@ public:
      * @brief           Set this texture as current on specified slot
      * @param slot      Texture slot
      */
-    void bind(size_t slot);
+    void bind(size_t slot) const;
 
     /**
      * @brief           Change size of texture
@@ -115,7 +115,6 @@ private:
 
     GLint m_wrapS{GL_REPEAT};
     GLint m_wrapT{GL_REPEAT};
-    GLint m_wrapR{GL_REPEAT};
 };
 
 }  // namespace core

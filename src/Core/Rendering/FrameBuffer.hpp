@@ -13,7 +13,7 @@ public:
     explicit FrameBuffer(Core &core, const glm::uvec2 &size);
     ~FrameBuffer();
 
-    void bind();
+    void bind() const;
 
     void resize(const glm::uvec2 &size);
 

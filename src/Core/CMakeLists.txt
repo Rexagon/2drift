@@ -30,7 +30,7 @@ add_library(core OBJECT ${CORE_SRC})
 target_include_directories(core
         PRIVATE ${CMAKE_SOURCE_DIR}/src)
 
-target_link_libraries(core PUBLIC glfw glad glm opengl32 gdi32)
+target_link_libraries(core PUBLIC glfw glad stb glm opengl32 gdi32)
 
 target_compile_definitions(core PUBLIC GLFW_INCLUDE_NONE)
 

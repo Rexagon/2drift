@@ -2,6 +2,7 @@
 
 #include <Core/Rendering/Material.hpp>
 #include <Core/Rendering/Stuff/ShaderParameters.hpp>
+#include <Core/Rendering/Texture.hpp>
 #include <Core/Resources/Stuff/ResourcesScope.hpp>
 
 namespace game
@@ -16,12 +17,14 @@ public:
 
         void setSize(const glm::vec2 &size);
         void setColor(const glm::vec4 &color);
+        void setTexture(const core::Texture *texture);
 
         void setTransformation(const glm::mat3 &transformation);
 
     private:
         glm::vec2 m_size{1.0f, 1.0f};
-        glm::vec4 m_color{0.0f, 0.0f, 0.0f, 1.0f};
+        glm::vec4 m_color{1.0f, 1.0f, 1.0f, 1.0f};
+        const core::Texture *m_texture{nullptr};
 
         glm::mat3 m_transformation{1.0f};
     };
@@ -29,6 +32,8 @@ public:
     explicit SpriteMaterial(core::Core &core);
 
     void setCameraMatrix(const glm::mat3 &cameraMatrix);
+
+    constexpr static auto SPRITE_TEXTURE_SLOT = 0;
 
 protected:
     void onBind() const override;

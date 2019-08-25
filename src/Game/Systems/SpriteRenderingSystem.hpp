@@ -2,6 +2,7 @@
 
 #include <Core/Managers/WindowManager.hpp>
 #include <Core/Rendering/Mesh.hpp>
+#include <Core/Rendering/Texture.hpp>
 
 #include "Game/Rendering/SpriteMaterial.hpp"
 #include "Game/Stuff/System.hpp"
@@ -27,10 +28,11 @@ private:
 
 struct SpriteComponent
 {
-    RenderingLayer layer;
-    int8_t order;
+    RenderingLayer layer{RenderingLayer::GROUND};
+    int8_t order{0};
 
-    glm::vec2 size;
+    glm::vec2 size{0.0f, 0.0f};
+    const core::Texture *texture{nullptr};
 };
 
 }  // namespace game

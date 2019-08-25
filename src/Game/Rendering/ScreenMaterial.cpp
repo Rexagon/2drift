@@ -19,11 +19,11 @@ constexpr const auto RENDERING_PARAMETERS = RenderingParameters{
     false /* is depth write enabled */,
     GL_LEQUAL /* depth test function */,
 
-    false /* is blending enabled */,
+    true /* is blending enabled */,
     GL_SRC_ALPHA /* blending function src */,
     GL_ONE_MINUS_SRC_ALPHA /* blending function dst */,
 
-    true /* is face culling enabled */,
+    false /* is face culling enabled */,
     GL_BACK /* face culling side */,
 
     GL_FILL /* polygon mode */,

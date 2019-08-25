@@ -51,6 +51,7 @@ void RenderingManager::synchronize()
     // set blending functions
     glBlendFunc(m_renderingParameters.blendingFunctionSrc, m_renderingParameters.blendingFunctionDst);
 
+
     // set face culling enabled
     setEnabled(GL_CULL_FACE, m_renderingParameters.isFaceCullingEnabled);
 
@@ -362,6 +363,12 @@ void RenderingManager::bindTexture(const GLenum textureTarget, const GLuint text
     // TODO: find way to properly cache textures
 
     glBindTexture(textureTarget, textureId);
+}
+
+
+void RenderingManager::onInit()
+{
+    synchronize();
 }
 
 }  // namespace core

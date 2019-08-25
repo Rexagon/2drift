@@ -45,7 +45,7 @@ Texture::~Texture()
 }
 
 
-void Texture::bind(size_t slot)
+void Texture::bind(size_t slot) const
 {
     m_renderingManager->bindTexture(GL_TEXTURE_2D, m_id, slot);
 }

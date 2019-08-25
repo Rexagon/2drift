@@ -294,6 +294,9 @@ public:
      */
     void bindTexture(GLenum textureTarget, GLuint textureId, size_t slot);
 
+protected:
+    void onInit() override;
+
 private:
     static constexpr auto TEXTURE_COUNT = 32u;
 

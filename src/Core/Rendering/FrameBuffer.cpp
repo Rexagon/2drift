@@ -9,7 +9,7 @@ namespace core
 {
 FrameBuffer::FrameBuffer(Core &core, const glm::uvec2 &size)
     : m_renderingManager{core.get<RenderingManager>().lock()}
-    , m_colorTexture{core, size, GL_RGBA, GL_RGBA, GL_UNSIGNED_BYTE, nullptr}
+    , m_colorTexture{core, size, GL_RGBA8, GL_RGBA, GL_UNSIGNED_BYTE, nullptr}
 {
     glGenFramebuffers(1, &m_id);
 
@@ -24,7 +24,7 @@ FrameBuffer::~FrameBuffer()
 }
 
 
-void FrameBuffer::bind()
+void FrameBuffer::bind() const
 {
     m_renderingManager->setCurrentFrameBufferId(m_id);
 }

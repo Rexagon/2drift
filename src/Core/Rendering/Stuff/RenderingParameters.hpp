@@ -14,7 +14,7 @@ struct RenderingParameters final
     GLenum blendingFunctionSrc{GL_SRC_ALPHA};
     GLenum blendingFunctionDst{GL_ONE_MINUS_SRC_ALPHA};
 
-    bool isFaceCullingEnabled{true};
+    bool isFaceCullingEnabled{false};
     GLenum faceCullingSide{GL_BACK};
 
     GLenum polygonMode{GL_FILL};

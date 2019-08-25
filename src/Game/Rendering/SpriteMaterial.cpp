@@ -23,7 +23,7 @@ constexpr const auto RENDERING_PARAMETERS = RenderingParameters{
     GL_SRC_ALPHA /* blending function src */,
     GL_ONE_MINUS_SRC_ALPHA /* blending function dst */,
 
-    true /* is face culling enabled */,
+    false /* is face culling enabled */,
     GL_BACK /* face culling side */,
 
     GL_FILL /* polygon mode */,
@@ -41,6 +41,9 @@ SpriteMaterial::SpriteMaterial(Core &core)
 
     auto resourceManager = core.get<ResourceManager>().lock();
     setShader(resourceManager->get<Shader>(SPRITE_SHADER_NAME).lock());
+
+    getShader().bind();
+    getShader().setUniform("uTexture", 0);
 }
 
 
@@ -66,6 +69,12 @@ void SpriteMaterial::Parameters::apply(core::Shader &shader) const
     shader.setUniform("uSize", m_size);
     shader.setUniform("uColor", m_color);
     shader.setUniform("uTransformationMatrix", m_transformation);
+
+    shader.setUniform("uHasTexture", m_texture != nullptr);
+    if (m_texture != nullptr)
+    {
+        m_texture->bind(SPRITE_TEXTURE_SLOT);
+    }
 }
 
 
@@ -78,6 +87,12 @@ void SpriteMaterial::Parameters::setSize(const glm::vec2 &size)
 void SpriteMaterial::Parameters::setColor(const glm::vec4 &color)
 {
     m_color = color;
+}
+
+
+void SpriteMaterial::Parameters::setTexture(const core::Texture *texture)
+{
+    m_texture = texture;
 }
 
 

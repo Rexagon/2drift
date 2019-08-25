@@ -2,9 +2,17 @@
 
 in vec2 fTexCoords;
 
+uniform sampler2D uTexture;
+uniform int uHasTexture;
 uniform vec4 uColor;
 
 void main()
 {
-    gl_FragColor = vec4(fTexCoords, 0.0, 1.0);
+    vec4 color = uColor;
+    if (uHasTexture == 1)
+    {
+        color *= texture(uTexture, fTexCoords);
+    }
+
+    gl_FragColor = color;
 }

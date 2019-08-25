@@ -3,6 +3,8 @@
 
 #include "MainScene.hpp"
 
+#include <Core/Resources/TextureLoader.hpp>
+
 #include "Game/Stuff/Scene.hpp"
 #include "Game/Systems/CameraResizingSystem.hpp"
 #include "Game/Systems/CarMovementSystem.hpp"
@@ -10,22 +12,16 @@
 #include "Game/Systems/RenderingSystem.hpp"
 #include "Game/Systems/SpriteRenderingSystem.hpp"
 
-struct Comp1
-{
-    float a = 0.0f;
-};
-
-struct Comp2
-{
-    float b = 0.0f;
-};
+using namespace core;
 
 namespace game
 {
-MainSceneState::MainSceneState(core::Core &core, entt::registry &registry, entt::dispatcher &dispatcher)
+MainSceneState::MainSceneState(Core &core, entt::registry &registry, entt::dispatcher &dispatcher)
     : SharedState(core, registry, dispatcher)
+    , m_resourcesScope{core}
 {
 }
+
 
 std::unique_ptr<core::Scene> createMainScene(core::Core &core)
 {
@@ -36,6 +32,9 @@ std::unique_ptr<core::Scene> createMainScene(core::Core &core)
 
     auto &state = scene->getState();
     auto &registry = state.getRegistry();
+    auto &resourcesScope = state.getResourcesScope();
+
+    resourcesScope.bind<Texture>("car_texture", TextureLoader{core, "car.png"});
 
     // Create camera
     auto cameraEntity = registry.create();
@@ -45,10 +44,13 @@ std::unique_ptr<core::Scene> createMainScene(core::Core &core)
     registry.assign<CameraComponent>(cameraEntity);
 
     // Create car
+    auto carTexture = core.get<ResourceManager>().lock()->get<Texture>("car_texture").lock();
+
     auto spriteEntity = registry.create();
     registry.assign<TransformComponent>(spriteEntity);
     registry.assign<CarComponent>(spriteEntity);
-    registry.assign<SpriteComponent>(spriteEntity, SpriteComponent{RenderingLayer::GROUND, 0, glm::vec2{34.0f, 89.0f}});
+    registry.assign<SpriteComponent>(
+        spriteEntity, SpriteComponent{RenderingLayer::GROUND, 0, glm::vec2{34.0f, 89.0f}, carTexture.get()});
 
     return scene;
 }  // namespace game
