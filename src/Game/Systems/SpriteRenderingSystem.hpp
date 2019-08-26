@@ -32,6 +32,7 @@ struct SpriteComponent
     int8_t order{0};
 
     glm::vec2 size{0.0f, 0.0f};
+    glm::vec4 color{1.0f, 1.0f, 1.0f, 1.0f};
     const core::Texture *texture{nullptr};
 };
 

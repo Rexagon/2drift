@@ -36,6 +36,7 @@ void SpriteRenderingSystem::update(game::SharedState &state, float /*dt*/)
         auto parameters = std::make_unique<SpriteMaterial::Parameters>();
 
         parameters->setSize(spriteComponent.size);
+        parameters->setColor(spriteComponent.color);
         parameters->setTexture(spriteComponent.texture);
 
         const auto *transform = registry.try_get<TransformComponent>(entity);

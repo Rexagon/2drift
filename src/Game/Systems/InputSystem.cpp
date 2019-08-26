@@ -36,7 +36,7 @@ void InputSystem::update(MainSceneState &state, float dt)
 
 void InputSystem::updateHalfAxis(float &axis, keyboard::Key key, float dt, float speed, float min, float max)
 {
-    auto change = 0.0f;
+    float change;
     if (m_inputManager->getKey(key))
     {
         change = speed;

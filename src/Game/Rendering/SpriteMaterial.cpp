@@ -15,18 +15,18 @@ constexpr const auto SPRITE_VERTEX_SHADER = "sprite.vert";
 constexpr const auto SPRITE_FRAGMENT_SHADER = "sprite.frag";
 
 constexpr const auto RENDERING_PARAMETERS = RenderingParameters{
-    false /* is depth test enabled */,
-    false /* is depth write enabled */,
-    GL_LEQUAL /* depth test function */,
+    false,      // is depth test enabled
+    false,      // is depth write enabled
+    GL_LEQUAL,  // depth test function
 
-    true /* is blending enabled */,
-    GL_SRC_ALPHA /* blending function src */,
-    GL_ONE_MINUS_SRC_ALPHA /* blending function dst */,
+    true,                    // is blending enabled
+    GL_SRC_ALPHA,            // blending function src
+    GL_ONE_MINUS_SRC_ALPHA,  // blending function dst
 
-    false /* is face culling enabled */,
-    GL_BACK /* face culling side */,
+    false,    // is face culling enabled
+    GL_BACK,  // face culling side
 
-    GL_FILL /* polygon mode */,
+    GL_FILL  // polygon mode
 };
 
 }  // namespace

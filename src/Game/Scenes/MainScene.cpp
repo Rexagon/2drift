@@ -22,7 +22,45 @@ MainSceneState::MainSceneState(Core &core, entt::registry &registry, entt::dispa
 }
 
 
-std::unique_ptr<core::Scene> createMainScene(core::Core &core)
+entt::entity createMainCamera(MainSceneState &state)
+{
+    auto &registry = state.getRegistry();
+
+    auto entity = registry.create();
+    registry.assign<MainCameraTag>(entity);
+    registry.assign<WindowResizeableCameraTag>(entity);
+    registry.assign<TransformComponent>(entity);
+    registry.assign<CameraComponent>(entity);
+
+    return entity;
+}
+
+
+entt::entity createCar(MainSceneState &state)
+{
+    auto &registry = state.getRegistry();
+
+    const auto texture =
+        state.getResourcesScope().get<Texture>("car_texture", TextureLoader{state.getCore(), "car.png"}).lock();
+
+    const auto sprite = SpriteComponent{
+        RenderingLayer::CAR,                // rendering layer
+        0,                                  // order in layer
+        texture->getSize(),                 // size
+        glm::vec4{1.0f, 1.0f, 1.0f, 1.0f},  // color
+        texture.get()                       // texture
+    };
+
+    auto entity = registry.create();
+    registry.assign<TransformComponent>(entity);
+    registry.assign<CarComponent>(entity);
+    registry.assign<SpriteComponent>(entity, sprite);
+
+    return entity;
+}
+
+
+std::unique_ptr<core::Scene> createMainScene(Core &core)
 {
     using SceneSystems =
         Systems<InputSystem, CameraResizingSystem, CarMovementSystem, SpriteRenderingSystem, RenderingSystem>;
@@ -30,26 +68,9 @@ std::unique_ptr<core::Scene> createMainScene(core::Core &core)
     auto scene = std::make_unique<Scene<MainSceneState, SceneSystems>>(core);
 
     auto &state = scene->getState();
-    auto &registry = state.getRegistry();
-    auto &resourcesScope = state.getResourcesScope();
 
-    resourcesScope.bind<Texture>("car_texture", TextureLoader{core, "car.png"});
-
-    // Create camera
-    auto cameraEntity = registry.create();
-    registry.assign<MainCameraTag>(cameraEntity);
-    registry.assign<WindowResizeableCameraTag>(cameraEntity);
-    registry.assign<TransformComponent>(cameraEntity);
-    registry.assign<CameraComponent>(cameraEntity);
-
-    // Create car
-    auto carTexture = core.get<ResourceManager>().lock()->get<Texture>("car_texture").lock();
-
-    auto spriteEntity = registry.create();
-    registry.assign<TransformComponent>(spriteEntity);
-    registry.assign<CarComponent>(spriteEntity);
-    registry.assign<SpriteComponent>(
-        spriteEntity, SpriteComponent{RenderingLayer::GROUND, 0, glm::vec2{34.0f, 89.0f}, carTexture.get()});
+    createMainCamera(state);
+    createCar(state);
 
     return scene;
 }  // namespace game
