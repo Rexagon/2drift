@@ -34,6 +34,14 @@ std::weak_ptr<void> ResourceManager::get(const ResourceManager::Key &key)
 }
 
 
+std::weak_ptr<void> ResourceManager::get(const core::ResourceManager::Key &key,
+                                         const core::ResourceManager::Loader &loader)
+{
+    bind(key, loader);
+    return get(key);
+}
+
+
 void ResourceManager::bind(const core::ResourceManager::Key &key, const core::ResourceManager::Loader &loader)
 {
     m_loaders.emplace(key, loader);

@@ -32,15 +32,12 @@ constexpr const auto RENDERING_PARAMETERS = RenderingParameters{
 
 namespace game
 {
-ScreenMaterial::ScreenMaterial(Core &core)
-    : Material{core, RENDERING_PARAMETERS, nullptr}
-    , m_resourcesScope{core}
+ScreenMaterial::ScreenMaterial(Core &core, core::ResourcesScope &resourcesScope)
+    : Material{core, RENDERING_PARAMETERS,
+               resourcesScope
+                   .get<Shader>(SCREEN_SHADER_NAME, ShaderLoader{core, SCREEN_VERTEX_SHADER, SCREEN_FRAGMENT_SHADER})
+                   .lock()}
 {
-    m_resourcesScope.bind<Shader>(SCREEN_SHADER_NAME, ShaderLoader{core, SCREEN_VERTEX_SHADER, SCREEN_FRAGMENT_SHADER});
-
-    auto resourceManager = core.get<ResourceManager>().lock();
-    setShader(resourceManager->get<Shader>(SCREEN_SHADER_NAME).lock());
-
     getShader().bind();
     getShader().setUniform("uScreenTexture", SCREEN_TEXTURE_SLOT);
 }

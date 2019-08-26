@@ -9,12 +9,9 @@ namespace game
 class ScreenMaterial final : public core::Material
 {
 public:
-    explicit ScreenMaterial(core::Core &core);
+    explicit ScreenMaterial(core::Core &core, core::ResourcesScope &resourcesScope);
 
     constexpr static auto SCREEN_TEXTURE_SLOT = 10;
-
-private:
-    core::ResourcesScope m_resourcesScope;
 };
 
 }  // namespace game

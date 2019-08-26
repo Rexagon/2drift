@@ -35,6 +35,12 @@ public:
     template <typename T>
     void bind(const std::string &name, const ResourceManager::Loader &loader, bool load = false);
 
+    template <typename T>
+    std::weak_ptr<T> get(const std::string &name);
+
+    template <typename T>
+    std::weak_ptr<T> get(const std::string &name, const ResourceManager::Loader &loader);
+
 private:
     std::shared_ptr<ResourceManager> m_resourceManager;
 
@@ -54,6 +60,20 @@ void ResourcesScope::bind(const std::string &name, const core::ResourceManager::
     {
         m_resourceManager->get(key);
     }
+}
+
+
+template <typename T>
+std::weak_ptr<T> ResourcesScope::get(const std::string &name)
+{
+    return m_resourceManager->get<T>(name);
+}
+
+
+template <typename T>
+std::weak_ptr<T> ResourcesScope::get(const std::string &name, const ResourceManager::Loader &loader)
+{
+    return m_resourceManager->get<T>(name, loader);
 }
 
 }  // namespace core

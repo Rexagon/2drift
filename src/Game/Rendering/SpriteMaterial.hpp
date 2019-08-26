@@ -29,7 +29,7 @@ public:
         glm::mat3 m_transformation{1.0f};
     };
 
-    explicit SpriteMaterial(core::Core &core);
+    explicit SpriteMaterial(core::Core &core, core::ResourcesScope &resourcesScope);
 
     void setCameraMatrix(const glm::mat3 &cameraMatrix);
 
@@ -40,8 +40,6 @@ protected:
 
 private:
     glm::mat3 m_cameraMatrix{1.0f};
-
-    core::ResourcesScope m_resourcesScope;
 };
 
 }  // namespace game

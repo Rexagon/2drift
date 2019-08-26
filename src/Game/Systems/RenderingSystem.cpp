@@ -12,7 +12,7 @@ RenderingSystem::RenderingSystem(SharedState &state)
     , m_windowManager{state.getCore().get<WindowManager>().lock()}
     , m_renderingManager{state.getCore().get<RenderingManager>().lock()}
     , m_screenBuffer{state.getCore(), m_windowManager->getSize()}
-    , m_screenMaterial{state.getCore()}
+    , m_screenMaterial{state.getCore(), state.getResourcesScope()}
     , m_screenQuad{}
 {
     m_screenBuffer.getColorTexture().setFilters(GL_NEAREST, GL_NEAREST);

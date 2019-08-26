@@ -33,15 +33,12 @@ constexpr const auto RENDERING_PARAMETERS = RenderingParameters{
 
 namespace game
 {
-SpriteMaterial::SpriteMaterial(Core &core)
-    : Material{core, RENDERING_PARAMETERS, nullptr}
-    , m_resourcesScope{core}
+SpriteMaterial::SpriteMaterial(Core &core, core::ResourcesScope &resourcesScope)
+    : Material{core, RENDERING_PARAMETERS,
+               resourcesScope
+                   .get<Shader>(SPRITE_SHADER_NAME, ShaderLoader{core, SPRITE_VERTEX_SHADER, SPRITE_FRAGMENT_SHADER})
+                   .lock()}
 {
-    m_resourcesScope.bind<Shader>(SPRITE_SHADER_NAME, ShaderLoader{core, SPRITE_VERTEX_SHADER, SPRITE_FRAGMENT_SHADER});
-
-    auto resourceManager = core.get<ResourceManager>().lock();
-    setShader(resourceManager->get<Shader>(SPRITE_SHADER_NAME).lock());
-
     getShader().bind();
     getShader().setUniform("uTexture", 0);
 }

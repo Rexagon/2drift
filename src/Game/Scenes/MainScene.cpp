@@ -18,7 +18,6 @@ namespace game
 {
 MainSceneState::MainSceneState(Core &core, entt::registry &registry, entt::dispatcher &dispatcher)
     : SharedState(core, registry, dispatcher)
-    , m_resourcesScope{core}
 {
 }
 

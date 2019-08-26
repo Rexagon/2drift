@@ -15,7 +15,7 @@ namespace game
 SpriteRenderingSystem::SpriteRenderingSystem(SharedState &state)
     : System{state}
     , m_windowManager{state.getCore().get<WindowManager>().lock()}
-    , m_material{state.getCore()}
+    , m_material{state.getCore(), state.getResourcesScope()}
     , m_spriteMesh{}
 {
     m_spriteMesh.update(MeshGeometry::createRectangle(glm::vec2{-0.5f, 0.5f}, glm::vec2{0.5f, -0.5f}));

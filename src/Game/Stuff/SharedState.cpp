@@ -9,6 +9,7 @@ SharedState::SharedState(core::Core &core, entt::registry &registry, entt::dispa
     : m_core{core}
     , m_registry{registry}
     , m_dispatcher{dispatcher}
+    , m_resourcesScope{core}
 {
 }
 
