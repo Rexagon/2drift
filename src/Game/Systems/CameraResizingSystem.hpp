@@ -23,6 +23,4 @@ private:
     std::shared_ptr<core::WindowManager> m_windowManager;
 };
 
-using WindowResizeableCameraTag = entt::tag<"window_resizeable_camera"_hs>;
-
 }  // namespace game

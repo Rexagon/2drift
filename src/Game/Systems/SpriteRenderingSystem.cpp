@@ -8,6 +8,8 @@
 #include <Core/Core.hpp>
 #include <Core/Rendering/Stuff/MeshGeometry.hpp>
 
+#include "Game/Components/General.hpp"
+
 using namespace core;
 
 namespace game

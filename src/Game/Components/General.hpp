@@ -1,13 +1,24 @@
 #pragma once
 
 #include <entt/entity/helper.hpp>
+#include <glm/mat3x3.hpp>
+#include <glm/vec2.hpp>
+#include <glm/vec3.hpp>
+#include <glm/vec4.hpp>
+
+#include <Core/Rendering/Texture.hpp>
 
 namespace game
 {
 // Tags
+//
+
 using MainCameraTag = entt::tag<"main_camera"_hs>;
 
+using WindowResizeableCameraTag = entt::tag<"window_resizeable_camera"_hs>;
+
 // Components
+//
 
 struct TransformComponent
 {
@@ -24,8 +35,6 @@ struct CameraComponent
 };
 
 
-// Constants
-
 enum RenderingLayer : uint8_t
 {
     GROUND,
@@ -37,6 +46,17 @@ enum RenderingLayer : uint8_t
     BUILDINGS,
 
     UI
+};
+
+
+struct SpriteComponent
+{
+    RenderingLayer layer{RenderingLayer::GROUND};
+    int8_t order{0};
+
+    glm::vec2 size{0.0f, 0.0f};
+    glm::vec4 color{1.0f, 1.0f, 1.0f, 1.0f};
+    const core::Texture *texture{nullptr};
 };
 
 }  // namespace game

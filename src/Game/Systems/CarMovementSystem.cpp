@@ -5,7 +5,8 @@
 
 #include <glm/gtx/rotate_vector.hpp>
 
-#include "General.hpp"
+#include "Game/Components/Car.hpp"
+#include "Game/Components/General.hpp"
 
 using namespace core;
 

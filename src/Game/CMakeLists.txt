@@ -12,7 +12,8 @@ set(GAME_SRC
         Systems/CarMovementSystem.cpp
         Systems/InputSystem.cpp
         Systems/RenderingSystem.cpp
-        Systems/SpriteRenderingSystem.cpp)
+        Systems/SpriteRenderingSystem.cpp
+        Systems/WheelsPositioningSystem.cpp)
 
 add_executable(game ${GAME_SRC})
 

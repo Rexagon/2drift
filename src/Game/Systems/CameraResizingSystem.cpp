@@ -3,7 +3,7 @@
 
 #include "CameraResizingSystem.hpp"
 
-#include "General.hpp"
+#include "Game/Components/General.hpp"
 
 using namespace core;
 

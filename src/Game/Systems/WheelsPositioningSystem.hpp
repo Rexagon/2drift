@@ -5,10 +5,10 @@
 
 namespace game
 {
-class CarMovementSystem final : public System<MainSceneState>
+class WheelsPositioningSystem final : public System<MainSceneState>
 {
 public:
-    explicit CarMovementSystem(MainSceneState &state);
+    explicit WheelsPositioningSystem(MainSceneState &state);
 
     void update(MainSceneState &state, float dt) override;
 };
