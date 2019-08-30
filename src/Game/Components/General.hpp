@@ -22,9 +22,7 @@ using WindowResizeableCameraTag = entt::tag<"window_resizeable_camera"_hs>;
 
 struct TransformComponent
 {
-    glm::vec2 position{0.0f, 0.0f};
-    float rotation{0.0f};
-    glm::vec2 scale{1.0f, 1.0f};
+    glm::mat3 transform{1.0f};
 };
 
 

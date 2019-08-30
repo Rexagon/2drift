@@ -3,7 +3,7 @@
 
 #include "WheelsPositioningSystem.hpp"
 
-#include <glm/gtx/rotate_vector.hpp>
+#include <glm/gtx/matrix_transform_2d.hpp>
 
 #include "Game/Components/Car.hpp"
 #include "Game/Components/General.hpp"
@@ -22,37 +22,31 @@ void WheelsPositioningSystem::update(MainSceneState &state, float /* dt */)
 
     const auto view = registry.view<CarComponent, TransformComponent>();
 
-    view.each([&registry](const CarComponent &car, const TransformComponent &transform) {
-        const auto front = glm::rotate(glm::vec2{0.0f, 1.0f}, transform.rotation);
-        const auto right = glm::vec2{front.y, -front.x};
-
+    view.each([&registry](const CarComponent &car, const TransformComponent &t) {
         const auto &offset = car.spriteOffset;
-
         const auto halfWheelbase = glm::vec2{0.0f, car.wheelbaseLength * 0.5f};
-
         const auto frontTrackCenter = offset + halfWheelbase;
-        const auto frontLeftPosition = frontTrackCenter - glm::vec2{car.frontTrackWidth * 0.5f, 0.0f};
-        const auto frontRightPosition = frontTrackCenter + glm::vec2{car.frontTrackWidth * 0.5f, 0.0f};
-
-        auto &flWheelTransform = registry.get<TransformComponent>(car.frontLeftWheel);
-        flWheelTransform.position = transform.position + frontLeftPosition.x * right + frontLeftPosition.y * front;
-        flWheelTransform.rotation = transform.rotation;
-
-        auto &frWheelTransform = registry.get<TransformComponent>(car.frontRightWheel);
-        frWheelTransform.position = transform.position + frontRightPosition.x * right + frontRightPosition.y * front;
-        frWheelTransform.rotation = transform.rotation;
-
         const auto rearTrackCenter = offset - halfWheelbase;
+
+        // Front left
+        auto &frontLeftWheel = registry.get<TransformComponent>(car.frontLeftWheel);
+        const auto frontLeftPosition = frontTrackCenter - glm::vec2{car.frontTrackWidth * 0.5f, 0.0f};
+        frontLeftWheel.transform = glm::translate(t.transform, frontLeftPosition);
+
+        // Front right
+        auto &frontRightWheel = registry.get<TransformComponent>(car.frontRightWheel);
+        const auto frontRightPosition = frontTrackCenter + glm::vec2{car.frontTrackWidth * 0.5f, 0.0f};
+        frontRightWheel.transform = glm::translate(t.transform, frontRightPosition);
+
+        // Rear left
+        auto &rearLeftWheel = registry.get<TransformComponent>(car.rearLeftWheel);
         const auto rearLeftPosition = rearTrackCenter - glm::vec2{car.rearTrackWidth * 0.5f, 0.0f};
+        rearLeftWheel.transform = glm::translate(t.transform, rearLeftPosition);
+
+        // Rear right
+        auto &rearRightWheel = registry.get<TransformComponent>(car.rearRightWheel);
         const auto rearRightPosition = rearTrackCenter + glm::vec2{car.rearTrackWidth * 0.5f, 0.0f};
-
-        auto &rlWheelTransform = registry.get<TransformComponent>(car.rearLeftWheel);
-        rlWheelTransform.position = transform.position + rearLeftPosition.x * right + rearLeftPosition.y * front;
-        rlWheelTransform.rotation = transform.rotation;
-
-        auto &rrWheelTransform = registry.get<TransformComponent>(car.rearRightWheel);
-        rrWheelTransform.position = transform.position + rearRightPosition.x * right + rearRightPosition.y * front;
-        rrWheelTransform.rotation = transform.rotation;
+        rearRightWheel.transform = glm::translate(t.transform, rearRightPosition);
     });
 }
 

@@ -41,12 +41,10 @@ void SpriteRenderingSystem::update(game::SharedState &state, float /*dt*/)
         parameters->setColor(spriteComponent.color);
         parameters->setTexture(spriteComponent.texture);
 
-        const auto *transform = registry.try_get<TransformComponent>(entity);
-        if (transform != nullptr)
+        const auto *t = registry.try_get<TransformComponent>(entity);
+        if (t != nullptr)
         {
-            parameters->setTransformation(
-                glm::scale(glm::rotate(glm::translate(glm::mat3{1.0f}, transform->position), transform->rotation),
-                           transform->scale));
+            parameters->setTransformation(t->transform);
         }
 
         state.getRenderingQueue().push(spriteComponent.layer, RenderingQueue::Item{spriteComponent.order, &m_spriteMesh,
