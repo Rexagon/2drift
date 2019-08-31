@@ -11,7 +11,7 @@ set(GAME_SRC
         Systems/CameraMovementSystem.cpp
         Systems/CameraResizingSystem.cpp
         Systems/CarMovementSystem.cpp
-        Systems/InputSystem.cpp
+        Systems/PlayerCarControlSystem.cpp
         Systems/RenderingSystem.cpp
         Systems/SpriteRenderingSystem.cpp
         Systems/WheelsPositioningSystem.cpp)

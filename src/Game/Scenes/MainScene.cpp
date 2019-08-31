@@ -13,7 +13,7 @@
 #include "Game/Systems/CameraMovementSystem.hpp"
 #include "Game/Systems/CameraResizingSystem.hpp"
 #include "Game/Systems/CarMovementSystem.hpp"
-#include "Game/Systems/InputSystem.hpp"
+#include "Game/Systems/PlayerCarControlSystem.hpp"
 #include "Game/Systems/RenderingSystem.hpp"
 #include "Game/Systems/SpriteRenderingSystem.hpp"
 #include "Game/Systems/WheelsPositioningSystem.hpp"
@@ -81,13 +81,16 @@ entt::entity createMainCamera(MainSceneState &state)
 }
 
 
-entt::entity createWheel(MainSceneState &state)
+entt::entity createWheel(MainSceneState &state, bool steeringEnabled)
 {
     auto &registry = state.getRegistry();
 
     const auto wheel = WheelComponent{
         0.45f * 20.0f,  // diameter
         0.2f * 20.0f,   // width
+
+        0.0f,  // chamber
+        0.0f,  // toe
     };
 
     const auto sprite = SpriteComponent{
@@ -103,6 +106,16 @@ entt::entity createWheel(MainSceneState &state)
     registry.assign<SpriteComponent>(entity, sprite);
     registry.assign<WheelComponent>(entity, wheel);
 
+    if (steeringEnabled)
+    {
+        auto steering = SteeringWheelComponent{
+            0.0f,  // caster
+            0.0f,  // angle
+        };
+
+        registry.assign<SteeringWheelComponent>(entity, steering);
+    }
+
     return entity;
 }
 
@@ -115,10 +128,12 @@ entt::entity createCar(MainSceneState &state)
         state.getResourcesScope().get<Texture>("car_texture", TextureLoader{state.getCore(), "car.png"}).lock();
 
     const auto car = CarComponent{
-        createWheel(state),  // front left wheel
-        createWheel(state),  // front right wheel
-        createWheel(state),  // rear left wheel
-        createWheel(state),  // rear right wheel
+        createWheel(state, true),   // front left wheel
+        createWheel(state, true),   // front right wheel
+        createWheel(state, false),  // rear left wheel
+        createWheel(state, false),  // rear right wheel
+
+        glm::radians(30.0f),  // max steering angle
 
         4.445f * 20.0f,  // length
         1.695f * 20.0f,  // width
@@ -138,9 +153,9 @@ entt::entity createCar(MainSceneState &state)
     };
 
     auto entity = registry.create();
-    registry.assign<PlayerTag>(entity);
     registry.assign<TransformComponent>(entity);
     registry.assign<CarComponent>(entity, car);
+    registry.assign<CarControlsComponent>(entity);
     registry.assign<SpriteComponent>(entity, sprite);
 
     return entity;
@@ -149,8 +164,8 @@ entt::entity createCar(MainSceneState &state)
 
 std::unique_ptr<core::Scene> createMainScene(Core &core)
 {
-    using SceneSystems = Systems<InputSystem, CameraResizingSystem, CarMovementSystem, WheelsPositioningSystem,
-                                 CameraMovementSystem, SpriteRenderingSystem, RenderingSystem>;
+    using SceneSystems = Systems<CameraResizingSystem, PlayerCarControlSystem, CarMovementSystem,
+                                 WheelsPositioningSystem, CameraMovementSystem, SpriteRenderingSystem, RenderingSystem>;
 
     auto scene = std::make_unique<Scene<MainSceneState, SceneSystems>>(core);
 
@@ -161,11 +176,15 @@ std::unique_ptr<core::Scene> createMainScene(Core &core)
     const auto camera = createMainCamera(state);
     const auto car = createCar(state);
 
+    // Connect camera to car
     const auto cameraJoint = CameraJointComponent{
         car,  // target
         0.5f  // factor
     };
     registry.assign<CameraJointComponent>(camera, cameraJoint);
+
+    // Make car player controllable
+    registry.assign<PlayerControllableTag>(car);
 
     return scene;
 }  // namespace game

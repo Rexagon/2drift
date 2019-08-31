@@ -29,24 +29,40 @@ void WheelsPositioningSystem::update(MainSceneState &state, float /* dt */)
         const auto rearTrackCenter = offset - halfWheelbase;
 
         // Front left
-        auto &frontLeftWheel = registry.get<TransformComponent>(car.frontLeftWheel);
         const auto frontLeftPosition = frontTrackCenter - glm::vec2{car.frontTrackWidth * 0.5f, 0.0f};
-        frontLeftWheel.matrix = glm::translate(carTransform.matrix, frontLeftPosition);
+
+        auto [frontLeftWheelTransform, frontLeftWheel, frontLeftWheelSteering] =
+            registry.get<TransformComponent, WheelComponent, SteeringWheelComponent>(car.frontLeftWheel);
+
+        frontLeftWheelTransform.matrix = glm::rotate(glm::translate(carTransform.matrix, frontLeftPosition),
+                                                     frontLeftWheelSteering.angle + frontLeftWheel.toe);
 
         // Front right
-        auto &frontRightWheel = registry.get<TransformComponent>(car.frontRightWheel);
         const auto frontRightPosition = frontTrackCenter + glm::vec2{car.frontTrackWidth * 0.5f, 0.0f};
-        frontRightWheel.matrix = glm::translate(carTransform.matrix, frontRightPosition);
+
+        auto [frontRightWheelTransform, frontRightWheel, frontRightWheelSteering] =
+            registry.get<TransformComponent, WheelComponent, SteeringWheelComponent>(car.frontRightWheel);
+
+        frontRightWheelTransform.matrix = glm::rotate(glm::translate(carTransform.matrix, frontRightPosition),
+                                                      frontRightWheelSteering.angle - frontRightWheel.toe);
 
         // Rear left
-        auto &rearLeftWheel = registry.get<TransformComponent>(car.rearLeftWheel);
         const auto rearLeftPosition = rearTrackCenter - glm::vec2{car.rearTrackWidth * 0.5f, 0.0f};
-        rearLeftWheel.matrix = glm::translate(carTransform.matrix, rearLeftPosition);
+
+        auto [rearLeftWheelTransform, rearLeftWheel] =
+            registry.get<TransformComponent, WheelComponent>(car.rearLeftWheel);
+
+        rearLeftWheelTransform.matrix =
+            glm::rotate(glm::translate(carTransform.matrix, rearLeftPosition), rearLeftWheel.toe);
 
         // Rear right
-        auto &rearRightWheel = registry.get<TransformComponent>(car.rearRightWheel);
         const auto rearRightPosition = rearTrackCenter + glm::vec2{car.rearTrackWidth * 0.5f, 0.0f};
-        rearRightWheel.matrix = glm::translate(carTransform.matrix, rearRightPosition);
+
+        auto [rearRightWheelTransform, rearRightWheel] =
+            registry.get<TransformComponent, WheelComponent>(car.rearRightWheel);
+
+        rearRightWheelTransform.matrix =
+            glm::rotate(glm::translate(carTransform.matrix, rearRightPosition), -rearRightWheel.toe);
     });
 }
 

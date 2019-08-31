@@ -7,10 +7,10 @@
 
 namespace game
 {
-class InputSystem final : public System<MainSceneState>
+class PlayerCarControlSystem final : public System<MainSceneState>
 {
 public:
-    explicit InputSystem(MainSceneState &state);
+    explicit PlayerCarControlSystem(MainSceneState &state);
 
     void update(MainSceneState &state, float dt) override;
 

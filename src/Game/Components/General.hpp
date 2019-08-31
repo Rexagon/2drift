@@ -17,7 +17,7 @@ using MainCameraTag = entt::tag<"main_camera"_hs>;
 
 using WindowResizeableCameraTag = entt::tag<"window_resizeable_camera"_hs>;
 
-using PlayerTag = entt::tag<"player"_hs>;
+using PlayerControllableTag = entt::tag<"player_controllable"_hs>;
 
 // Components
 //
