@@ -32,7 +32,7 @@ def main():
     parser.add_argument(
         '--output-dir', help="output directory for image parts")
     parser.add_argument(
-        '--tile-size', help="square image part width and height in pixels", default=512)
+        '--tile-size', help="square image part width and height in pixels", default=512, type=int)
 
     args = parser.parse_args()
     split_image(args.image_path, args.output_dir, args.tile_size)
