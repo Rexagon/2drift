@@ -22,7 +22,7 @@ void WheelsPositioningSystem::update(MainSceneState &state, float /* dt */)
 
     const auto view = registry.view<CarComponent, TransformComponent>();
 
-    view.each([&registry](const CarComponent &car, const TransformComponent &t) {
+    view.each([&registry](const CarComponent &car, const TransformComponent &carTransform) {
         const auto &offset = car.spriteOffset;
         const auto halfWheelbase = glm::vec2{0.0f, car.wheelbaseLength * 0.5f};
         const auto frontTrackCenter = offset + halfWheelbase;
@@ -31,22 +31,22 @@ void WheelsPositioningSystem::update(MainSceneState &state, float /* dt */)
         // Front left
         auto &frontLeftWheel = registry.get<TransformComponent>(car.frontLeftWheel);
         const auto frontLeftPosition = frontTrackCenter - glm::vec2{car.frontTrackWidth * 0.5f, 0.0f};
-        frontLeftWheel.transform = glm::translate(t.transform, frontLeftPosition);
+        frontLeftWheel.matrix = glm::translate(carTransform.matrix, frontLeftPosition);
 
         // Front right
         auto &frontRightWheel = registry.get<TransformComponent>(car.frontRightWheel);
         const auto frontRightPosition = frontTrackCenter + glm::vec2{car.frontTrackWidth * 0.5f, 0.0f};
-        frontRightWheel.transform = glm::translate(t.transform, frontRightPosition);
+        frontRightWheel.matrix = glm::translate(carTransform.matrix, frontRightPosition);
 
         // Rear left
         auto &rearLeftWheel = registry.get<TransformComponent>(car.rearLeftWheel);
         const auto rearLeftPosition = rearTrackCenter - glm::vec2{car.rearTrackWidth * 0.5f, 0.0f};
-        rearLeftWheel.transform = glm::translate(t.transform, rearLeftPosition);
+        rearLeftWheel.matrix = glm::translate(carTransform.matrix, rearLeftPosition);
 
         // Rear right
         auto &rearRightWheel = registry.get<TransformComponent>(car.rearRightWheel);
         const auto rearRightPosition = rearTrackCenter + glm::vec2{car.rearTrackWidth * 0.5f, 0.0f};
-        rearRightWheel.transform = glm::translate(t.transform, rearRightPosition);
+        rearRightWheel.matrix = glm::translate(carTransform.matrix, rearRightPosition);
     });
 }
 

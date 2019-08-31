@@ -25,11 +25,11 @@ void CarMovementSystem::update(MainSceneState &state, float dt)
     const auto &input = state.getInput();
 
     auto carEntities = registry.view<TransformComponent, CarComponent>();
-    carEntities.each([&](TransformComponent &t, const CarComponent &) {
+    carEntities.each([&](TransformComponent &transform, const CarComponent &) {
         const auto translation = glm::translate(glm::mat3{1.0f}, glm::vec2{0.0f, 100.0f * input.throttleAxis * dt});
         const auto rotation = glm::rotate(glm::mat3{1.0f}, input.steeringAxis * dt);
 
-        t.transform *= rotation * translation;
+        transform.matrix *= rotation * translation;
     });
 }
 

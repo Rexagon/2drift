@@ -24,7 +24,7 @@ using PlayerTag = entt::tag<"player"_hs>;
 
 struct TransformComponent
 {
-    glm::mat3 transform{1.0f};
+    glm::mat3 matrix{1.0f};
 };
 
 

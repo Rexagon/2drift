@@ -22,22 +22,24 @@ void CameraMovementSystem::update(SharedState &state, float dt)
 
     registry.view<CameraJointComponent>().each(
         [&registry, &dt](const entt::entity entity, const CameraJointComponent &joint) {
-            auto *t = registry.try_get<TransformComponent>(entity);
-            if (t == nullptr)
+            auto *cameraTransform = registry.try_get<TransformComponent>(entity);
+            if (cameraTransform == nullptr)
             {
                 return;
             }
 
-            auto *target = registry.try_get<TransformComponent>(joint.target);
-            if (target == nullptr)
+            auto *targetTransform = registry.try_get<TransformComponent>(joint.target);
+            if (targetTransform == nullptr)
             {
                 return;
             }
 
-            const auto position = -glm::vec2{t->transform[2]};
-            const auto targetPosition = glm::vec2{target->transform[2]};
+            const auto position = -glm::vec2{cameraTransform->matrix[2]};
+            const auto targetPosition = glm::vec2{targetTransform->matrix[2]};
 
-            t->transform = glm::translate(t->transform, -(targetPosition - position) * joint.factor * dt);
+            const auto movement = (targetPosition - position) * joint.factor * dt;
+
+            cameraTransform->matrix = glm::translate(cameraTransform->matrix, -movement);
         });
 }
 

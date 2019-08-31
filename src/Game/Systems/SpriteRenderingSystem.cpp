@@ -64,14 +64,15 @@ void SpriteRenderingSystem::update(game::SharedState &state, float /*dt*/)
     const auto &[cameraParameters, cameraTransform] =
         registry.get<CameraComponent, TransformComponent>(*registry.view<MainCameraTag>().begin());
 
-    m_material.setCameraMatrix(cameraParameters.projection * cameraTransform.transform);
+    m_material.setCameraMatrix(cameraParameters.projection * cameraTransform.matrix);
 
-    const auto cameraOffset = -glm::vec2{cameraTransform.transform[2]};
+    const auto cameraOffset = -glm::vec2{cameraTransform.matrix[2]};
 
     registry.view<SpriteComponent>().each([&, this](entt::entity entity, SpriteComponent &spriteComponent) {
-        const auto *t = registry.try_get<TransformComponent>(entity);
+        const auto *spriteTransform = registry.try_get<TransformComponent>(entity);
 
-        if (t != nullptr && !contains(cameraOffset, glm::vec2{windowSize}, t->transform, spriteComponent.size))
+        if (spriteTransform != nullptr &&
+            !contains(cameraOffset, glm::vec2{windowSize}, spriteTransform->matrix, spriteComponent.size))
         {
             return;
         }
@@ -82,9 +83,9 @@ void SpriteRenderingSystem::update(game::SharedState &state, float /*dt*/)
         parameters->setColor(spriteComponent.color);
         parameters->setTexture(spriteComponent.texture);
 
-        if (t != nullptr)
+        if (spriteTransform != nullptr)
         {
-            parameters->setTransformation(t->transform);
+            parameters->setTransformation(spriteTransform->matrix);
         }
 
         state.getRenderingQueue().push(spriteComponent.layer, RenderingQueue::Item{spriteComponent.order, &m_spriteMesh,
