@@ -1,6 +1,6 @@
 #pragma once
 
-#include "Game/Scenes/MainScene.hpp"
+#include "Game/Scenes/MainSceneState.hpp"
 #include "Game/Stuff/System.hpp"
 
 namespace game

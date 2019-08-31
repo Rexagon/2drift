@@ -5,6 +5,7 @@ set(GAME_SRC
         Rendering/SpriteMaterial.cpp
 
         Scenes/MainScene.cpp
+        Scenes/MainSceneState.cpp
 
         Stuff/SharedState.cpp
 

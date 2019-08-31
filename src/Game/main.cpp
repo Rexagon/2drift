@@ -2,11 +2,12 @@
 
 #include <Core/Managers/FileManager.hpp>
 #include <Core/Managers/InputManager.hpp>
+#include <Core/Managers/RenderingManager.hpp>
 #include <Core/Managers/ResourceManager.hpp>
 #include <Core/Managers/SceneManager.hpp>
-#include <Core/Stuff/Time.hpp>
-
 #include <Core/Managers/WindowManager.hpp>
+
+#include <Core/Stuff/Time.hpp>
 
 #include "Scenes/MainScene.hpp"
 
@@ -30,6 +31,8 @@ void init(Core &core)
     core.bind<SceneManager>();
 
     core.init();
+
+    core.get<WindowManager>().lock()->setVsyncEnabled(true);
 
     core.get<SceneManager>().lock()->openScene(createMainScene(core));
 }

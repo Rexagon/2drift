@@ -7,9 +7,13 @@
 
 #include <Core/Resources/TextureLoader.hpp>
 
+#include "MainSceneState.hpp"
+
 #include "Game/Components/Car.hpp"
 #include "Game/Components/General.hpp"
+
 #include "Game/Stuff/Scene.hpp"
+
 #include "Game/Systems/CameraMovementSystem.hpp"
 #include "Game/Systems/CameraResizingSystem.hpp"
 #include "Game/Systems/CarMovementSystem.hpp"
@@ -22,13 +26,6 @@ using namespace core;
 
 namespace game
 {
-MainSceneState::MainSceneState(Core &core, entt::registry &registry, entt::dispatcher &dispatcher)
-    : SharedState(core, registry, dispatcher)
-{
-    core.get<WindowManager>().lock()->setVsyncEnabled(true);
-}
-
-
 void createMap(MainSceneState &state)
 {
     constexpr auto TILE_SIZE = glm::uvec2{512, 512};
@@ -164,8 +161,13 @@ entt::entity createCar(MainSceneState &state)
 
 std::unique_ptr<core::Scene> createMainScene(Core &core)
 {
-    using SceneSystems = Systems<CameraResizingSystem, PlayerCarControlSystem, CarMovementSystem,
-                                 WheelsPositioningSystem, CameraMovementSystem, SpriteRenderingSystem, RenderingSystem>;
+    using SceneSystems = Systems<CameraResizingSystem,     // Adjust camera size to screen
+                                 PlayerCarControlSystem,   // Apply player input to car controls
+                                 CarMovementSystem,        // Move cars
+                                 WheelsPositioningSystem,  // Move wheels to their global positions
+                                 CameraMovementSystem,     // Move camera to target
+                                 SpriteRenderingSystem,    // Make queue of sprites to render
+                                 RenderingSystem>;         // Render everything
 
     auto scene = std::make_unique<Scene<MainSceneState, SceneSystems>>(core);
 

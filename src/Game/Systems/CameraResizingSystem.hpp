@@ -1,7 +1,5 @@
 #pragma once
 
-#include <entt/entity/helper.hpp>
-
 #include <Core/Managers/WindowManager.hpp>
 
 #include "Game/Stuff/System.hpp"
