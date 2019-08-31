@@ -17,6 +17,8 @@ using MainCameraTag = entt::tag<"main_camera"_hs>;
 
 using WindowResizeableCameraTag = entt::tag<"window_resizeable_camera"_hs>;
 
+using PlayerTag = entt::tag<"player"_hs>;
+
 // Components
 //
 
@@ -55,6 +57,13 @@ struct SpriteComponent
     glm::vec2 size{0.0f, 0.0f};
     glm::vec4 color{1.0f, 1.0f, 1.0f, 1.0f};
     const core::Texture *texture{nullptr};
+};
+
+
+struct CameraJointComponent
+{
+    entt::entity target;
+    float factor;
 };
 
 }  // namespace game

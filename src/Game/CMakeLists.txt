@@ -8,6 +8,7 @@ set(GAME_SRC
 
         Stuff/SharedState.cpp
 
+        Systems/CameraMovementSystem.cpp
         Systems/CameraResizingSystem.cpp
         Systems/CarMovementSystem.cpp
         Systems/InputSystem.cpp

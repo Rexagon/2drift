@@ -3,11 +3,14 @@
 
 #include "MainScene.hpp"
 
+#include <glm/gtx/matrix_transform_2d.hpp>
+
 #include <Core/Resources/TextureLoader.hpp>
 
 #include "Game/Components/Car.hpp"
 #include "Game/Components/General.hpp"
 #include "Game/Stuff/Scene.hpp"
+#include "Game/Systems/CameraMovementSystem.hpp"
 #include "Game/Systems/CameraResizingSystem.hpp"
 #include "Game/Systems/CarMovementSystem.hpp"
 #include "Game/Systems/InputSystem.hpp"
@@ -22,6 +25,45 @@ namespace game
 MainSceneState::MainSceneState(Core &core, entt::registry &registry, entt::dispatcher &dispatcher)
     : SharedState(core, registry, dispatcher)
 {
+    core.get<WindowManager>().lock()->setVsyncEnabled(true);
+}
+
+
+void createMap(MainSceneState &state)
+{
+    constexpr auto TILE_SIZE = glm::uvec2{512, 512};
+    constexpr auto MAP_SIZE = glm::uvec2{9, 5};
+
+    constexpr auto OFFSET = glm::vec2{TILE_SIZE} * glm::vec2{MAP_SIZE} * 0.5f;
+
+    auto &registry = state.getRegistry();
+
+    for (auto y = 0u; y < MAP_SIZE.y; ++y)
+    {
+        for (auto x = 0u; x < MAP_SIZE.x; ++x)
+        {
+            const auto textureName = "map/map_" + std::to_string(y) + "_" + std::to_string(x);
+
+            const auto texture = state.getResourcesScope()
+                                     .get<Texture>(textureName, TextureLoader{state.getCore(), textureName + ".png"})
+                                     .lock();
+
+            const auto transform = TransformComponent{
+                glm::translate(glm::mat3{1.0f}, glm::vec2{TILE_SIZE} * glm::vec2{x, MAP_SIZE.y - y - 1} - OFFSET)};
+
+            const auto sprite = SpriteComponent{
+                RenderingLayer::GROUND,  // rendering layer
+                1,                       // order in layer
+                TILE_SIZE,               // size
+                glm::vec4{1.0f},         // color
+                texture.get()            // texture
+            };
+
+            auto entity = registry.create();
+            registry.assign<TransformComponent>(entity, transform);
+            registry.assign<SpriteComponent>(entity, sprite);
+        }
+    }
 }
 
 
@@ -96,6 +138,7 @@ entt::entity createCar(MainSceneState &state)
     };
 
     auto entity = registry.create();
+    registry.assign<PlayerTag>(entity);
     registry.assign<TransformComponent>(entity);
     registry.assign<CarComponent>(entity, car);
     registry.assign<SpriteComponent>(entity, sprite);
@@ -107,14 +150,22 @@ entt::entity createCar(MainSceneState &state)
 std::unique_ptr<core::Scene> createMainScene(Core &core)
 {
     using SceneSystems = Systems<InputSystem, CameraResizingSystem, CarMovementSystem, WheelsPositioningSystem,
-                                 SpriteRenderingSystem, RenderingSystem>;
+                                 CameraMovementSystem, SpriteRenderingSystem, RenderingSystem>;
 
     auto scene = std::make_unique<Scene<MainSceneState, SceneSystems>>(core);
 
     auto &state = scene->getState();
+    auto &registry = state.getRegistry();
 
-    createMainCamera(state);
-    createCar(state);
+    createMap(state);
+    const auto camera = createMainCamera(state);
+    const auto car = createCar(state);
+
+    const auto cameraJoint = CameraJointComponent{
+        car,  // target
+        0.5f  // factor
+    };
+    registry.assign<CameraJointComponent>(camera, cameraJoint);
 
     return scene;
 }  // namespace game
