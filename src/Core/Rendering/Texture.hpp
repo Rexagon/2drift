@@ -113,8 +113,8 @@ private:
     GLint m_minFilter{GL_LINEAR};
     GLint m_magFilter{GL_LINEAR};
 
-    GLint m_wrapS{GL_REPEAT};
-    GLint m_wrapT{GL_REPEAT};
+    GLint m_wrapS{GL_CLAMP_TO_EDGE};
+    GLint m_wrapT{GL_CLAMP_TO_EDGE};
 };
 
 }  // namespace core
