@@ -5,7 +5,7 @@
 
 namespace core::time
 {
-using DurationSeconds = std::chrono::duration<double>;
+using DurationSeconds = std::chrono::duration<float>;
 using DurationMilliseconds = std::chrono::duration<uint64_t, std::milli>;
 using DurationNanoseconds = std::chrono::duration<uint64_t, std::nano>;
 

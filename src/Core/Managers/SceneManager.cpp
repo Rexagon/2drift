@@ -15,87 +15,48 @@ SceneManager::SceneManager(Core &core)
 
 SceneManager::~SceneManager()
 {
-    while (!m_scenes.empty())
+    if (m_currentScene != nullptr)
     {
-        m_scenes.top()->onLeave();
-        m_scenes.top()->onClose();
-        m_scenes.pop();
+        m_currentScene->close();
+    }
+
+    m_nextScene.reset();
+    m_currentScene.reset();
+}
+
+
+void SceneManager::handleEvent(const Event &e)
+{
+    m_currentScene->handleEvent(e);
+}
+
+
+void SceneManager::update(float dt)
+{
+    m_currentScene->update(dt);
+
+    if (m_nextScene != nullptr)
+    {
+        m_currentScene->close();
+        m_currentScene = std::move(m_nextScene);
+
+        m_currentScene->init();
     }
 }
 
 
-void SceneManager::handleEvent(const sf::Event &e)
+void SceneManager::openScene(std::unique_ptr<Scene> scene)
 {
-    m_scenes.top()->handleEvent(e);
-}
+    assert(scene != nullptr);
 
-
-void SceneManager::update(double dt)
-{
-    m_scenes.top()->update(dt);
-}
-
-
-void SceneManager::applyActions()
-{
-    // Execute all actions
-    while (!m_actionsQueue.empty())
+    if (m_currentScene == nullptr)
     {
-        auto action = std::move(m_actionsQueue.front());
-
-        switch (action.first)
-        {
-            case ActionType::PUSH:
-                // Leave from current scene
-                if (!m_scenes.empty())
-                {
-                    m_scenes.top()->onLeave();
-                }
-
-                // Init and enter next scene
-                action.second->onInit();
-                action.second->onEnter();
-                m_scenes.emplace(std::move(action.second));
-                break;
-
-            case ActionType::POP:
-                // Leave and close current scene
-                if (!m_scenes.empty())
-                {
-                    m_scenes.top()->onLeave();
-                    m_scenes.top()->onClose();
-                    m_scenes.pop();
-                }
-
-                // Enter previous scene
-                if (!m_scenes.empty())
-                {
-                    m_scenes.top()->onEnter();
-                }
-                break;
-        }
-
-        m_actionsQueue.pop();
+        m_currentScene = std::move(scene);
     }
-
-    // Close game if empty
-    if (m_scenes.empty())
+    else
     {
-        getCore().requestExit();
-        return;
+        m_nextScene = std::move(scene);
     }
-}
-
-
-void SceneManager::push(std::unique_ptr<Scene> scene)
-{
-    m_actionsQueue.emplace(ActionType::PUSH, std::move(scene));
-}
-
-
-void SceneManager::pop()
-{
-    m_actionsQueue.emplace(ActionType::POP, nullptr);
 }
 
 }  // namespace core

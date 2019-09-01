@@ -1,10 +1,13 @@
 #pragma once
 
 #include <memory>
+#include <queue>
 
-#include <SFML/Graphics/RenderWindow.hpp>
-#include <SFML/System/Vector2.hpp>
+#include <GLFW/glfw3.h>
+#include <glad/glad.h>
+#include <glm/vec2.hpp>
 
+#include "Core/Stuff/Event.hpp"
 #include "Manager.hpp"
 
 namespace core
@@ -23,32 +26,37 @@ public:
      * @param size      Window size in pixels
      * @param title     Window title
      */
-    explicit WindowManager(Core &core, const sf::Vector2u &size, const std::string &title);
+    explicit WindowManager(Core &core, const glm::uvec2 &size, const std::string &title);
+    ~WindowManager() override;
 
-    void setSize(const sf::Vector2u &size);
+    void display();
+
+    bool pollEvent(Event &event);
+
+    void setSize(const glm::uvec2 &size);
+    const glm::uvec2 &getSize() const;
 
     void setTitle(const std::string &title);
+    const std::string &getTitle() const;
 
     void setVsyncEnabled(bool enabled);
 
-    sf::Vector2u getSize() const;
-
     bool isVsyncEnabled() const;
 
-    sf::RenderWindow &getWindow();
+    const GLFWwindow *getWindow() const;
 
 private:
     void onInit() override;
 
-    struct
-    {
-        sf::Vector2u size;
-        std::string title;
-    } m_options;
+    void registerCallbacks();
 
-    bool m_isVsyncEnabled = true;
+    glm::uvec2 m_size;
+    std::string m_title;
+    bool m_isVsyncEnabled{true};
 
-    std::unique_ptr<sf::RenderWindow> m_renderWindow;
+    GLFWwindow *m_window{nullptr};
+
+    std::queue<Event> m_events{};
 };
 
 }  // namespace core

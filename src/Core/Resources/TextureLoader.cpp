@@ -3,20 +3,16 @@
 
 #include "TextureLoader.hpp"
 
-#include <SFML/Graphics/Texture.hpp>
+#include <stb/stb_image.h>
 
 #include "Core/Core.hpp"
+#include "Core/Rendering/Texture.hpp"
 
 namespace core
 {
 TextureLoader::TextureLoader(Core &core, const std::string &path)
-    : TextureLoader{core.get<FileManager>().lock(), path}
-{
-}
-
-
-TextureLoader::TextureLoader(const std::shared_ptr<FileManager> &fileManager, const std::string &path)
-    : m_fileManager{fileManager}
+    : m_core{core}
+    , m_fileManager{core.get<FileManager>().lock()}
     , m_path{path}
 {
 }
@@ -26,11 +22,28 @@ std::shared_ptr<void> TextureLoader::operator()()
 {
     const auto data = m_fileManager->load(m_path);
 
-    auto texture = std::make_shared<sf::Texture>();
-    if (!texture->loadFromMemory(data.data(), data.size()))
+    int width, height, channels;
+    stbi_set_flip_vertically_on_load(true);
+    auto *image = stbi_load_from_memory(reinterpret_cast<const uint8_t *>(data.data()), static_cast<int>(data.size()),
+                                        &width, &height, &channels, STBI_rgb_alpha);
+
+    if (image == nullptr)
     {
         throw std::runtime_error{"Unable to load texture: " + m_path};
     }
+
+    if (channels < 3)
+    {
+        stbi_image_free(static_cast<void *>(image));
+        throw std::runtime_error{"Unsupported texture format: " + m_path};
+    }
+
+    GLint internalFormat = channels == 3 ? GL_RGB8 : GL_RGBA8;
+    GLenum format = channels == 3 ? GL_RGB : GL_RGBA;
+
+    auto texture =
+        std::make_shared<Texture>(m_core, glm::uvec2{width, height}, internalFormat, format, GL_UNSIGNED_BYTE, image);
+    stbi_image_free(static_cast<void *>(image));
 
     return texture;
 }

@@ -1,80 +1,93 @@
 #pragma once
 
-#include <experimental/type_traits>
+#include <tuple>
 #include <vector>
 
 #include <Core/Managers/SceneManager.hpp>
+#include <Core/Stuff/Tag.hpp>
 
-#include "SceneEvents.hpp"
 #include "SharedState.hpp"
 #include "System.hpp"
 
 namespace game
 {
-template <typename T>
-class Scene final : public core::Scene
+template <typename... S>
+using Systems = core::Tags<S...>;
+
+template <typename T, typename>
+class Scene;
+
+template <typename T, typename... S>
+class Scene<T, Systems<S...>> final : public core::Scene
 {
 public:
     static_assert(std::is_base_of_v<SharedState, T>, "T must be a child class of SharedState");
+    static_assert(sizeof...(S) > 0, "Scene must have at least one system");
 
     explicit Scene(core::Core &core);
-
-    template <typename S, typename... Args>
-    void addSystem(Args &&... args);
-
-    void addSystem(const std::function<void(T &, double)> &system);
 
     inline T &getState();
 
 private:
-    void update(double dt) override;
+    void update(float dt) override;
 
-    entt::registry m_registry;
+    void init() override;
+
+    void close() override;
+
+    void handleEvent(const core::Event &e) override;
+
+    entt::registry m_registry{};
     entt::dispatcher m_dispatcher{};
 
-    T m_sharedState;
+    T m_state;
 
-    std::vector<std::function<void(T &, double)>> m_systems{};
+    std::tuple<S...> m_systems;
 };
 
 
-template <typename T>
-Scene<T>::Scene(core::Core &core)
+template <typename T, typename... S>
+Scene<T, Systems<S...>>::Scene(core::Core &core)
     : core::Scene{core}
-    , m_sharedState{core, m_registry, m_dispatcher}
+    , m_state{core, m_registry, m_dispatcher}
+    , m_systems{(static_cast<void>(core::Tag<S>{}), m_state)...}
 {
 }
 
 
-template <typename T>
-template <typename S, typename... Args>
-void Scene<T>::addSystem(Args &&... args)
+template <typename T, typename... S>
+inline T &Scene<T, Systems<S...>>::getState()
 {
-    m_systems.emplace_back(S{m_sharedState, std::forward<Args>(args)...});
+    return m_state;
 }
 
 
-template <typename T>
-void Scene<T>::addSystem(const std::function<void(T &, double)> &system)
+template <typename T, typename... S>
+void Scene<T, Systems<S...>>::init()
 {
-    m_systems.emplace_back(system);
+    m_state.getDispatcher().template trigger<events::OnInitScene>();
 }
 
 
-template <typename T>
-inline T &Scene<T>::getState()
+template <typename T, typename... S>
+void Scene<T, Systems<S...>>::close()
 {
-    return m_sharedState;
+    m_state.getDispatcher().template trigger<events::OnCloseScene>();
 }
 
 
-template <typename T>
-void Scene<T>::update(double dt)
+template <typename T, typename... S>
+void Scene<T, Systems<S...>>::handleEvent(const core::Event &e)
 {
-    for (auto &updater : m_systems)
-    {
-        updater(m_sharedState, dt);
-    }
+    m_state.getDispatcher().template trigger<core::Event>(e);
+}
+
+
+template <typename T, typename... S>
+void Scene<T, Systems<S...>>::update(float dt)
+{
+    using dummy = int[];
+    static_cast<void>(dummy{(static_cast<void>(std::get<S>(m_systems).update(m_state, dt)), 0)..., 0});
 }
 
 }  // namespace game

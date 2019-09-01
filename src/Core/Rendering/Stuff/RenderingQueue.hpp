@@ -1,8 +1,11 @@
 #pragma once
 
 #include <map>
+#include <vector>
 
-#include <SFML/Graphics/Drawable.hpp>
+#include "Core/Rendering/Material.hpp"
+#include "Core/Rendering/Mesh.hpp"
+#include "ShaderParameters.hpp"
 
 namespace core
 {
@@ -15,8 +18,9 @@ public:
     struct Item
     {
         int8_t order = 0;
-        sf::Drawable *drawable = nullptr;
-        sf::RenderStates renderStates;
+        Mesh *mesh = nullptr;
+        Material *material = nullptr;
+        std::unique_ptr<ShaderParameters> materialParameters{};
     };
 
     void push(uint8_t layer, Item &&item);
@@ -28,7 +32,7 @@ public:
     const std::map<uint8_t, std::vector<Item>> &getLayers() const;
 
 private:
-    std::map<uint8_t, std::vector<Item>> m_layers;
+    std::map<uint8_t, std::vector<Item>> m_layers{};
 };
 
 }  // namespace core

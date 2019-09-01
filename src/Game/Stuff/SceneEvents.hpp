@@ -1,7 +1,5 @@
 #pragma once
 
-#include <SFML/Window/Event.hpp>
-
 namespace game::events
 {
 /**
@@ -16,29 +14,6 @@ struct OnInitScene
  */
 struct OnCloseScene
 {
-};
-
-/**
- * @brief       Called when scene becomes current
- */
-struct OnEnterScene
-{
-};
-
-/**
- * @brief       Called when scene stops being current
- */
-struct OnLeaveScene
-{
-};
-
-/**
- * @brief       Called on every window event before Scene::onUpdate
- * @param e     Event from window
- */
-struct OnHandleEvent
-{
-    sf::Event e;
 };
 
 }  // namespace game::events

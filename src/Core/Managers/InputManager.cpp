@@ -5,15 +5,15 @@
 
 namespace
 {
-bool isKeyValid(const sf::Keyboard::Key key)
+bool isKeyValid(const uint16_t key)
 {
-    return static_cast<short>(key) >= 0 && static_cast<short>(key) < sf::Keyboard::KeyCount;
+    return static_cast<short>(key) <= core::keyboard::Last;
 }
 
 
-bool isMouseButtonValid(const sf::Mouse::Button button)
+bool isMouseButtonValid(const uint8_t button)
 {
-    return static_cast<short>(button) >= 0 && static_cast<short>(button) < sf::Mouse::ButtonCount;
+    return static_cast<short>(button) <= core::mouse::Button::Last;
 }
 }  // namespace
 
@@ -34,40 +34,40 @@ void InputManager::reset()
 }
 
 
-void InputManager::handleEvent(const sf::Event &e)
+void InputManager::handleEvent(const Event &e)
 {
     switch (e.type)
     {
-        case sf::Event::KeyPressed:
-            if (auto key = e.key.code; isKeyValid(key))
+        case Event::Type::KeyPressed:
+            if (auto key = e.key.key; isKeyValid(key))
             {
-                m_currentKeyboardState.set(key);
+                m_currentKeyboardState.set(static_cast<size_t>(key));
             }
             return;
 
-        case sf::Event::KeyReleased:
-            if (auto key = e.key.code; isKeyValid(key))
+        case Event::Type::KeyReleased:
+            if (auto key = e.key.key; isKeyValid(key))
             {
-                m_currentKeyboardState.reset(key);
+                m_currentKeyboardState.reset(static_cast<size_t>(key));
             }
             return;
 
-        case sf::Event::MouseButtonPressed:
+        case Event::Type::MouseButtonPressed:
             if (auto button = e.mouseButton.button; isMouseButtonValid(button))
             {
                 m_currentMouseButtonsState.set(button);
             }
             return;
 
-        case sf::Event::MouseButtonReleased:
+        case Event::Type::MouseButtonReleased:
             if (auto button = e.mouseButton.button; isMouseButtonValid(button))
             {
                 m_currentMouseButtonsState.reset(button);
             }
             return;
 
-        case sf::Event::MouseMoved:
-            m_currentMousePosition = sf::Vector2i{e.mouseMove.x, e.mouseMove.y};
+        case Event::Type::MouseMoved:
+            m_currentMousePosition = e.mouseMove.position;
             return;
 
         default:
@@ -76,49 +76,49 @@ void InputManager::handleEvent(const sf::Event &e)
 }
 
 
-bool InputManager::getKey(const sf::Keyboard::Key key) const
+bool InputManager::getKey(const uint16_t key) const
 {
     return isKeyValid(key) && m_currentKeyboardState[key];
 }
 
 
-bool InputManager::getKeyDown(const sf::Keyboard::Key key) const
+bool InputManager::getKeyDown(const uint16_t key) const
 {
     return isKeyValid(key) && !m_lastKeyboardState[key] && m_currentKeyboardState[key];
 }
 
 
-bool InputManager::getKeyUp(const sf::Keyboard::Key key) const
+bool InputManager::getKeyUp(const uint16_t key) const
 {
     return isKeyValid(key) && m_lastKeyboardState[key] && !m_currentKeyboardState[key];
 }
 
 
-bool InputManager::getMouseButton(const sf::Mouse::Button button) const
+bool InputManager::getMouseButton(const uint8_t button) const
 {
     return isMouseButtonValid(button) && m_currentMouseButtonsState[button];
 }
 
 
-bool InputManager::getMouseButtonDown(const sf::Mouse::Button button) const
+bool InputManager::getMouseButtonDown(const uint8_t button) const
 {
     return isMouseButtonValid(button) && !m_lastMouseButtonsState[button] && m_currentMouseButtonsState[button];
 }
 
 
-bool InputManager::getMouseButtonUp(const sf::Mouse::Button button) const
+bool InputManager::getMouseButtonUp(const uint8_t button) const
 {
     return isMouseButtonValid(button) && m_lastMouseButtonsState[button] && !m_currentMouseButtonsState[button];
 }
 
 
-sf::Vector2i InputManager::getMousePosition() const
+const glm::vec2 &InputManager::getMousePosition() const
 {
     return m_currentMousePosition;
 }
 
 
-sf::Vector2i InputManager::getMousePositionDelta() const
+glm::vec2 InputManager::getMousePositionDelta() const
 {
     return m_currentMousePosition - m_lastMousePosition;
 }

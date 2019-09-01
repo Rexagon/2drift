@@ -16,15 +16,32 @@ class System
 public:
     static_assert(std::is_base_of_v<SharedState, T>, "T must be a child class of SharedState");
 
-    explicit System(T &state)
-    {
-    }
+    explicit System(T &state);
 
     virtual ~System() = default;
 
-    virtual void operator()(T &t, double dt)
-    {
-    }
+    virtual void update(T &t, float dt) = 0;
+
+protected:
+    inline T &getState();
+
+private:
+    T &m_state;
 };
+
+
+template <typename T>
+System<T>::System(T &state)
+    : m_state{state}
+{
+}
+
+
+template <typename T>
+inline T &System<T>::getState()
+{
+    return m_state;
+}
+
 
 }  // namespace game

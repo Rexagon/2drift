@@ -11,14 +11,14 @@ class CameraResizingSystem : public System<SharedState>
 public:
     explicit CameraResizingSystem(SharedState &core);
 
-    void operator()(SharedState &state, double dt) override;
+    void update(SharedState &state, float dt) override;
 
 private:
-    std::shared_ptr<core::WindowManager> m_windowManager;
-};
+    void handleEvent(const core::Event &e);
 
-struct WindowResizeableComponent
-{
+    bool m_isWindowSizeChanged = true;
+
+    std::shared_ptr<core::WindowManager> m_windowManager;
 };
 
 }  // namespace game

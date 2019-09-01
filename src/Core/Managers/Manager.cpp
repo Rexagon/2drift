@@ -7,7 +7,6 @@ namespace core
 {
 Manager::Manager(Core &core)
     : m_core{core}
-    , m_isInitialized{false}
 {
 }
 

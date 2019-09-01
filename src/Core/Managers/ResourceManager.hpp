@@ -55,6 +55,20 @@ public:
     std::weak_ptr<T> get(const std::string &name);
 
     /**
+     * @brief           Bind and resource with loader for specified name
+     *                  and type
+     *
+     * @tparam T        Type of resource
+     * @param name      Name of resource
+     * @param loader    Loader of resource
+     * @return          Resource
+     *
+     * @throws          std::runtime_error if resource cannot be loaded
+     */
+    template <typename T>
+    std::weak_ptr<T> get(const std::string &name, const Loader &loader);
+
+    /**
      * @brief           Bind resource loader for specified type and name
      *
      * Further access by {type,name} pair will overwrite stored loader
@@ -113,6 +127,8 @@ public:
 
     std::weak_ptr<void> get(const Key &key);
 
+    std::weak_ptr<void> get(const Key &key, const Loader &loader);
+
     void bind(const Key &key, const Loader &loader);
 
     void unbind(const Key &key);
@@ -134,8 +150,8 @@ public:
     static inline Key createKey(const std::string &name);
 
 private:
-    std::unordered_map<Key, Loader, KeyHash> m_loaders;
-    mutable std::unordered_map<Key, std::shared_ptr<void>, KeyHash> m_resources;
+    std::unordered_map<Key, Loader, KeyHash> m_loaders{};
+    mutable std::unordered_map<Key, std::shared_ptr<void>, KeyHash> m_resources{};
 };
 
 
@@ -143,6 +159,13 @@ template <typename T>
 std::weak_ptr<T> ResourceManager::get(const std::string &name)
 {
     return std::static_pointer_cast<T>(get(createKey<T>(name)).lock());
+}
+
+
+template <typename T>
+std::weak_ptr<T> ResourceManager::get(const std::string &name, const Loader &loader)
+{
+    return std::static_pointer_cast<T>(get(createKey<T>(name), loader).lock());
 }
 
 
